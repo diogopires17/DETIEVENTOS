@@ -1,0 +1,13 @@
+.h1 {
+    color: black;
+    font-size: 88px;
+}
+
+.event-presentation {
+    background-image: url('path/to/image.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
