@@ -37,16 +37,16 @@
         <h1>Próximos Eventos</h1>
         <button class="create-event-button" > <a class = "create-event-button" href= "/criar"> Criar Evento </a> </button>
     </div>
-    <div class="event-container">
-        <div class="event-card">
-            <img src="https://via.placeholder.com/150" alt="Imagem do Evento">
-            {% for event in events %}           
-            <h2>{{event[1]}}</h2>
-            <p>{{event[2]}}</p>
-            <p>{{event[4]}}</p>
-            {% endfor %}
-            <button class="details-button">ver detalhes</button>
-        </div>
+    <div class="event-card">
+      <div class="event-date">22 abril</div>
+      <img src="https://via.placeholder.com/150" alt="Nome evento" class="event-image">
+      <div class="event-info">
+        {% for event in events %}
+        <h2 class="event-title">{{event[1]}}</h2>
+        <p class="event-details-btn">Ver detalhes</p>
+        <button class="event-status-btn">{{event[4]}}</button>
+        {% endfor %}
+      </div>
     </div>
     <div class="view-all-container">
         <button class="view-all-button">Ver Todos</button>

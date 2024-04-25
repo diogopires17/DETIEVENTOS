@@ -134,3 +134,57 @@ h1 {
     color: white;
     background-color: red;
 }
+
+.event-card {
+    width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+}
+
+.event-date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #004d40;
+    color: white;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.event-image {
+    width: 100%;
+    display: block;
+}
+
+.event-info {
+    padding: 8px;
+    background-color: #f5f5f5;
+}
+
+.event-title {
+    margin: 8px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.event-details-btn,
+.event-status-btn {
+    padding: 8px 16px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.event-details-btn {
+    border: 1px solid black;
+    color: black;
+}
+
+.event-status-btn {
+    background-color: #ef5350;
+    color: white;
+}
