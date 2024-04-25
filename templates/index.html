@@ -3,18 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <title>Document</title>
 </head>
 <body>
-    <div class="header">
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Meus Eventos</a></li>
-                <li><a href="#">Login</a></li>
-            </ul>
-        </nav>
-    </div>
+    <nav class="navbar">
+        <div class="navbar-container">
+          <ul class="navbar-menu">
+            <a href="/">LOGO</a>
+            <li><a href="/myevents">Meus Eventos</a></li>
+          </ul>
+          <div class="navbar-user">
+            <form class="search-form">
+                <input type="text" placeholder="">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form></button>
+            </form>
+            <a href="/login">Login</a>
+          </div>
+        </div>
+      </nav>
     <h1>Próximos Eventos</h1>
     <button>Criar Evento</button>
     <div>

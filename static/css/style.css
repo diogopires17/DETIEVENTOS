@@ -1,13 +1,78 @@
-.h1 {
-    color: black;
-    font-size: 88px;
+body {
+    font-family: Arial, sans-serif;
 }
 
-.event-presentation {
-    background-image: url('path/to/image.jpg');
-    background-size: cover;
-    background-position: center;
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: white;
     color: white;
-    text-align: center;
-    padding: 20px;
+    align-items: center;
+}
+
+body {
+    margin: 0;
+    padding: 0 100px;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: white;
+    color: black;
+    overflow: auto;
+}
+
+.navbar-container {
+    display: flex;
+    color: black;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-menu {
+    list-style-type: none;
+    color: black;
+    align-items: center;
+    margin: 0;
+    padding: 30px 0px;
+    display: flex;
+}
+
+.navbar-menu a {
+    color: black;
+    text-decoration: none;
+}
+
+.navbar-menu li {
+    padding: 14px 16px;
+}
+
+.navbar-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-user a {
+    text-decoration: none;
+    padding: 14px 16px;
+    border-radius: 4px;
+    color: black;
+}
+
+.navbar-user button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar-user input {
+    background-color: #DEDEDE;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
