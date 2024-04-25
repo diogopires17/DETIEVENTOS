@@ -16,6 +16,23 @@ def init_db():
     cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user1@gmail.com', 'User1', '1' )""")
     cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user2@gmail.com', 'User2', '2' )""")
 
+    cursor.execute("""DROP TABLE IF EXISTS events""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    date TEXT NOT NULL,
+    description TEXT NOT NULL,
+    location TEXT NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+    );""")
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', '16-09-2024', 'Android Workshop', 'DETI', 1)""")
+   # cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', '16-09-2024', 'Python Workshop', 'DETI', 1)""")
+    #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Java', '16-09-2024', 'Java Workshop', 'DETI', 1)""")
+    #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', '16-09-2024', 'C Workshop', 'DETI', 1)""")
+    #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C++', '16-09-2024', 'C++ Workshop', 'DETI', 1)""")
+    #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Ruby', '16-09-2024', 'Ruby Workshop', 'DETI', 1)""")
+    #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop PHP', '16-09-2024', 'PHP Workshop', 'DETI', 1)""")
     connection.commit()
 
 #                               FUNÇÕES AUXILIARES
@@ -37,3 +54,15 @@ def authenticate_user(email, password):
     except Exception as e:
         print(e)
         return False, "There was an error validating your input, please check your data and try again.", None, None, None
+    
+def get_events():
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
+    
+    try:
+        cursor.execute("SELECT * FROM events")
+        results = cursor.fetchall()
+        return results
+    except Exception as e:
+        print(e)
+        return None

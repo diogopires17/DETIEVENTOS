@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
-    <title>Document</title>
+    <title>Página Principal</title>
 </head>
 <body>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for category, message in messages %}
+              <div id="flash-message" class="alert alert-{{ category }} flash-error">
+                  {{ message }}
+              </div>
+          {% endfor %}
+      {% endif %}
+    {% endwith %}
     <nav class="navbar">
         <div class="navbar-container">
           <ul class="navbar-menu">
@@ -26,14 +35,16 @@
       </nav>
       <div class="events-header">
         <h1>Próximos Eventos</h1>
-        <button class="create-event-button">Criar Evento</button>
+        <button class="create-event-button" > <a class = "create-event-button" href= "/criar"> Criar Evento </a> </button>
     </div>
     <div class="event-container">
         <div class="event-card">
             <img src="https://via.placeholder.com/150" alt="Imagem do Evento">
-            <h2>Nome do Evento</h2>
-            <p>Data do Evento</p>
-            <p>Local do Evento</p>
+            {% for event in events %}           
+            <h2>{{event[1]}}</h2>
+            <p>{{event[2]}}</p>
+            <p>{{event[4]}}</p>
+            {% endfor %}
             <button class="details-button">ver detalhes</button>
         </div>
     </div>
@@ -42,3 +53,10 @@
     </div>
 </body>
 </html>
+
+<script>
+  setTimeout(function() {
+      const flashMessage = document.getElementById('flash-message');
+      if (flashMessage) flashMessage.style.display = 'none';
+  }, 2000);
+</script>

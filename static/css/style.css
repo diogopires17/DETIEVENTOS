@@ -96,6 +96,7 @@ h1 {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .event-container {
@@ -127,4 +128,9 @@ h1 {
     border-radius: 4px;
     cursor: pointer;
     text-align: left;
+}
+
+.flash-error {
+    color: white;
+    background-color: red;
 }

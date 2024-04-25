@@ -1,4 +1,5 @@
-from models import init_db, authenticate_user
+import sqlite3
+from models import *
 from flask import Flask, flash, redirect, render_template, request, session
 
 
@@ -11,8 +12,12 @@ init_db()
 
 @app.route('/')
 def home():
+    if 'user_email' not in session:
+        return redirect('/login')
+    events = get_events()
+    print (events)
 
-    return render_template('index.html')
+    return render_template('index.html', events=events)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -38,7 +43,14 @@ def login():
     else:
         return render_template('login.html')
 
-
+@app.route('/criar')
+def criar():
+    #  se o user nao for o admin
+    if session['user_email'] != "admin@gmail.com":
+        flash("Não tem permissões para aceder aqui", category='error')
+        return redirect('/')
+    
+    return render_template('novo_evento.html')
 @app.route('/eventos')
 def about():
     return render_template('eventos.html')
