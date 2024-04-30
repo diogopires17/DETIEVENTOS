@@ -59,7 +59,28 @@ def about():
 def perfil():
     return render_template('perfil.html')
 
+@app.route('/search', methods=['GET'])
+def search():
+    search_term = request.args.get('q', '')  
+    events = search_events(search_term)
+    return render_template('index.html', events=events)
 
+
+#                              FUNÇÕES AUXILIARES 
+
+# funcao para a pesquisa 
+def search_events(search_term):
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute("SELECT * FROM events WHERE name LIKE ? OR description LIKE ? OR mes LIKE? OR dia LIKE ?", ('%'+search_term+'%', '%'+search_term+'%' ,'%'+search_term+'%', '%'+search_term+'%'))
+        results = cursor.fetchall()
+        return results
+    except Exception as e:
+        print(e)
+        return None
+    
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
     home()
