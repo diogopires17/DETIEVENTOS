@@ -1,6 +1,6 @@
 :root {
     --primary-color: #4CAF50;
-    --secundary-color:black;
+    --secundary-color: black;
 }
 
 body {
@@ -132,12 +132,12 @@ h1 {
 }
 
 .event-card {
+    position: relative;
     width: 230px;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    position: relative;
     margin-right: 20px;
     background: #fff;
 }
@@ -158,12 +158,13 @@ h1 {
 }
 
 .event-info {
+    position: relative;
     padding: 8px;
 }
 
 .event-title {
     margin: 8px 0;
-    font-size: 22px;
+    font-size: 2rem;
     color: #333;
 }
 
@@ -185,7 +186,7 @@ h1 {
     color: white;
 }
 
-.event-details{
+.event-details {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -193,17 +194,18 @@ h1 {
 
 .event-content {
     display: block;
+    position: relative;
     text-align: right;
-    background-color: black;
+    background-color: #333;
     color: white;
     font-size: 2rem;
     font-weight: 700;
 }
 
-.event-day{
+.event-day {
     font-size: 2rem;
 }
 
-.event-month{
+.event-month {
     font-size: 1.25rem;
 }
