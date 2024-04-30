@@ -20,15 +20,20 @@ def init_db():
     cursor.execute("""CREATE TABLE IF NOT EXISTS events (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
-    date TEXT NOT NULL,
     description TEXT NOT NULL,
     location TEXT NOT NULL,
-    user_id INTEGER NOT NULL,
+    image TEXT,
+    dia int,
+    mes TEXT,   
+    user_id INTEGER NOT NULL,            
     FOREIGN KEY(user_id) REFERENCES users(id)
     );""")
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', '16-09-2024', 'Android Workshop', 'DETI', 1)""")
-   # cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', '16-09-2024', 'Python Workshop', 'DETI', 1)""")
-    #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Java', '16-09-2024', 'Java Workshop', 'DETI', 1)""")
+
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'https://tinyurl.com/29z5683u', 27, 'maio',1)""")
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'https://1000logos.net/wp-content/uploads/2020/08/Python-Logo.png', 6, 'julho', 1)""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'https://www.logo.wine/a/logo/Dart_(programming_language)/Dart_(programming_language)-Logo.wine.svg', 7, 'agosto', 1)""")   
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'https://tinyurl.com/2m2h4n9j', 15, 'Maio', 1)""")    
+   
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', '16-09-2024', 'C Workshop', 'DETI', 1)""")
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C++', '16-09-2024', 'C++ Workshop', 'DETI', 1)""")
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Ruby', '16-09-2024', 'Ruby Workshop', 'DETI', 1)""")
