@@ -41,7 +41,7 @@
 }
 
 .pop_up_image_upload {
-  background-color: rgb(146, 146, 146);
+  background-color: #BDBDBD;
   height: 40px;
   border-radius: 10px;
   margin-top: -15px;
@@ -85,4 +85,9 @@
 .pop_up_add_colaborador:hover {
   background-color: #1E9D13;
   color: rgb(255, 255, 255);
+}
+
+#eventDescription {
+  height: 10rem;
+  width: 60%;
 }
