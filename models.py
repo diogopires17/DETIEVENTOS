@@ -23,17 +23,17 @@ def init_db():
     description TEXT NOT NULL,
     location TEXT NOT NULL,
     image TEXT,
-    dia int,
-    mes TEXT,   
-    user_id INTEGER NOT NULL,            
+    date DATE,
+    user_id INTEGER,           
+    colaborator TEXT , 
     FOREIGN KEY(user_id) REFERENCES users(id)
     );""")
 
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'https://tinyurl.com/29z5683u', 27, 'maio',1)""")
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'https://1000logos.net/wp-content/uploads/2020/08/Python-Logo.png', 6, 'julho', 1)""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'https://www.logo.wine/a/logo/Dart_(programming_language)/Dart_(programming_language)-Logo.wine.svg', 7, 'agosto', 1)""")   
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'https://tinyurl.com/2m2h4n9j', 15, 'Maio', 1)""")    
-   
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'static/img/android.png', '2024-06-27',1, 'NEECT')""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 1, 'NEECT' )""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-05-07', 1, 'NEI')""")   
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-15', 1, 'NEET')""")    
+    
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', '16-09-2024', 'C Workshop', 'DETI', 1)""")
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C++', '16-09-2024', 'C++ Workshop', 'DETI', 1)""")
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Ruby', '16-09-2024', 'Ruby Workshop', 'DETI', 1)""")
