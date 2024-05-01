@@ -1,71 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <title>Página Principal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/pop_up.css">
+  <title>Página Principal</title>
 </head>
+
 <body>
-      {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-          {% for category, message in messages %}
-              <div id="flash-message" class="alert alert-{{ category }} flash-error">
-                  {{ message }}
-              </div>
-          {% endfor %}
-      {% endif %}
-    {% endwith %}
-    <nav class="navbar">
-        <div class="navbar-container">
-          <ul class="navbar-menu">
-            <a href="/">LOGO</a>
-            <li><a href="/myevents">Meus Eventos</a></li>
-          </ul>
-          <div class="navbar-user">
-            <form class="search-form" action="/search" method="get">
-              <input type="text" placeholder="" name="q">
-              <button type="submit"><i class="fas fa-search"></i></button>
-          </form>
-            </form>
-            <a href="/login">Login</a>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div id="flash-message" class="alert alert-{{ category }} flash-error">
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <ul class="navbar-menu">
+        <a href="/">LOGO</a>
+        <li><a href="/myevents">Meus Eventos</a></li>
+      </ul>
+      <div class="navbar-user">
+        <form class="search-form" action="/search" method="get">
+          <input type="text" placeholder="" name="q">
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        </form>
+        <a href="/login">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Proximos Eventos -->
+  <div class="events-header">
+    <h1>Próximos Eventos</h1>
+    <button class="create-event-button">Criar Evento</button>
+  </div>
+  <div class="event-card-container">
+    {% for event in events %}
+    <div class="event-card">
+      <div class="event-content">
+        <div class="event-day">{{event[5]}}</div>
+        <div class="event-month">{{event[6]}}</div>
+      </div>
+      <img src={{event[4]}} alt="Nome evento" class="event-image">
+      <div class="event-info">
+        <h2 class="event-title">{{event[1]}}</h2>
+        <div class="event-details">
+          <p class="event-details-btn">Ver detalhes</p>
+          <button class="event-status-btn">{{event[3]}}</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  </div>
+  </div>
+  <div class="view-all-container">
+    <button class="view-all-button">Ver Todos</button>
+  </div>
+
+
+  <!-- Pop up -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="upload-image-container bg-light">
+            <p>Upload de imagem</p>
           </div>
         </div>
-      </nav>
-      <div class="events-header">
-        <h1>Próximos Eventos</h1>
-        <button class="create-event-button" > <a class = "create-event-button" href= "/criar"> Criar Evento </a> </button>
-    </div>
-    <div class="event-card-container">
-      {% for event in events %}
-          <div class="event-card">
-        <div class="event-content">
-            <div class="event-day">{{event[5]}}</div>
-            <div class="event-month">{{event[6]}}</div>
-        </div>
-        <img src= {{event[4]}} alt="Nome evento" class="event-image">
-        <div class="event-info">
-            <h2 class="event-title">{{event[1]}}</h2>
-            <div class="event-details">
-                <p class="event-details-btn" >Ver detalhes</p>
-                <button class="event-status-btn">{{event[3]}}</button>
-            </div>
+        <div class="col-md-8">
+          <span class="close">&times;</span>
+          <form action="/criar" method="post">
+            <h2>Novo evento</h2>
+            <label for="eventDate">Data:</label><br>
+            <input type="date" id="eventDate" name="eventDate"><br>
+            <label for="eventDescription">Descrição do evento:</label><br>
+            <textarea id="eventDescription" name="eventDescription"></textarea><br>
+            <input type="submit" value="Criar Evento">
+          </form>
         </div>
       </div>
-      {% endfor %}
+    </div>
   </div>
-      </div>
-    </div>
-    <div class="view-all-container">
-        <button class="view-all-button">Ver Todos</button>
-    </div>
+
+
 </body>
+
 </html>
 
 <script>
-  setTimeout(function() {
-      const flashMessage = document.getElementById('flash-message');
-      if (flashMessage) flashMessage.style.display = 'none';
+  setTimeout(function () {
+    const flashMessage = document.getElementById('flash-message');
+    if (flashMessage) flashMessage.style.display = 'none';
   }, 2000);
+
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementsByClassName("create-event-button")[0];
+  var span = document.getElementsByClassName("close")[0];
+
+  btn.onclick = function () {
+    modal.style.display = "block";
+  }
+
+  span.onclick = function () {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 </script>
