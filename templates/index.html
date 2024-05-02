@@ -85,6 +85,7 @@
                 <p class="event-details-btn">Ver detalhes</p>
                 <button class="event-status-btn">{{event[3]}}</button>
                 <p class = "vagas"> {{event[8]}}/ {{event[9]}}</p>
+                <p class="preco">{{event[10 ]}}€ </p>
               </div>
             </div>
           </div>
@@ -122,26 +123,34 @@
               Adicionar Colaborador
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Colaborador 1</a>
-              <a class="dropdown-item" href="#">Colaborador 2</a>
-              <a class="dropdown-item" href="#">Colaborador 3</a>
+              <a class="dropdown-item" href="#">NEI</a>
+              <a class="dropdown-item" href="#">NEECT</a>
+              <a class="dropdown-item" href="#">AETTUA</a>
             </div>
           </div>
-        </div>
-
-        <!--  -->
+        </div>  
+        
         <div class="col-md-9">
           <span class="close">&times;</span>
           <form action="/criar" method="post">
             <h2>Novo evento</h2>
             <label for="eventName">Nome do evento:</label><br>
             <input type="text" id="eventName" name="eventName"><br>
+            <label for="eventLocation">Local do evento:</label><br>
+            <input type="text" id="eventLocation" name="eventLocation"><br>
+            <label for="eventTime">Vagas</label><br>
+            <input type="number" id="eventCapacity" name="eventCapacity"><br>
             <label for="eventDate">Data:</label><br>
             <input type="date" id="eventDate" name="eventDate"><br>
             <label for="eventDescription">Descrição do evento:</label><br>
             <textarea id="eventDescription" name="eventDescription"></textarea><br>
+            <label for="eventPrice">Preço:</label><br>
+            <input type="number" id="eventPrice" name="eventPrice"><br>
             <input type="submit" value="Criar Evento">
+
           </form>
+
+      
         </div>
       </div>
     </div>

@@ -28,13 +28,14 @@ def init_db():
     colaborator TEXT , 
     vagas INTEGER,
     lotacao INTEGER,
+    preco INTEGER,
     FOREIGN KEY(user_id) REFERENCES users(id)
     );""")
 
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'static/img/android.png', '2024-06-27',1, 'NEECT', 15, 20)""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 1, 'NEECT', 10, 15 )""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-05-07', 1, 'NEI', 30,30)""")   
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-15', 1, 'NEET', 10, 12)""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'static/img/android.png', '2024-06-27',1, 'NEECT', 15, 20, 0)""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 1, 'NEECT', 10, 15, 10 )""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-05-07', 1, 'NEI', 30,30, 3)""")   
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-15', 1, 'NEET', 10, 12, 5)""")    
     
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', '16-09-2024', 'C Workshop', 'DETI', 1)""")
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C++', '16-09-2024', 'C++ Workshop', 'DETI', 1)""")

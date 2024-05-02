@@ -32,11 +32,10 @@ def format_date(value, format='%d-%B'):
 def home():
     print(session)
     if 'user_email' not in session:
-        return redirect(url_for('login'))  # Redirect to the login page if user is not logged in
+        return redirect(url_for('login'))  
     
     events = get_events()
     
-    # Convert the date strings to datetime objects
     converted_events = []
     for event in events:
         converted_event = list(event)
@@ -77,28 +76,41 @@ def login():
 
 @app.route('/criar', methods=['POST'])
 def criar():
-    # Check if the user is logged in
     if 'user_email' not in session:
         flash("You must be logged in to access this page", category='error')
         return redirect('/login')
 
-    # Check if the user is an admin
     if session['user_email'] != "admin@gmail.com":
         flash("Não tem permissões para aceder aqui", category='error')
         return redirect('/')
     else:
-        event_date = request.form['eventDate']
+        eventName = request.form['eventName']
         event_description = request.form['eventDescription']
-
+        event_location = request.form['eventLocation']
+        #image = request.form['image']
+        date = request.form['eventDate']
+        event_date = request.form['eventDate']
+        #colaborator = request.form['colaborator']
+        vagas = 0
+        image = '/static/img/mobile.jpg'
+        lotacao = request.form['eventCapacity']
+        colaborator = 'NEI'
+        preco =  request.form['eventPrice']
         connection = sqlite3.connect('data.db', check_same_thread=False)
         cursor = connection.cursor()
 
+        # gets current user id from session
+        session_email = session.get('user_email')
+        cursor.execute("SELECT id FROM users WHERE email = ?", (session_email,))
+        user_id = cursor.fetchone()[0]
         try:
-            cursor.execute("INSERT INTO events (date, description) VALUES (?, ?)", (event_date, event_description))
+            cursor.execute("INSERT INTO events (name, description, location, date, user_id, colaborator, lotacao, preco, image) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?  )", (eventName, event_description, event_location, event_date, user_id, colaborator, lotacao, preco, image))
             connection.commit()
-            return "Event created successfully"
+            flash('Event created successfully', category='success')
+            return redirect('/')
         except Exception as e:
-            print(e)
+            print("erro")
+            print( e)
             return "An error occurred while creating the event" 
         
         
@@ -119,14 +131,17 @@ def search():
         flash('An error occurred while searching for events', category='error')
         return redirect('/')
 
-    # Convert the date strings to datetime objects
     converted_events = []
     for event in events:
         converted_event = list(event)
         converted_event[5] = datetime.strptime(event[5], '%Y-%m-%d').date()
         converted_events.append(tuple(converted_event))
 
-    return render_template('index.html', events=converted_events)
+    is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
+    name = session.get('user_name')
+    user = 'user_email' in session
+    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name)
+
 
 @app.route('/logout')
 def logout():
@@ -147,7 +162,7 @@ def search_events(search_term):
         results = cursor.fetchall()
         return results
     except Exception as e:
-        print(e)
+        print("ERRO" + e)
         return None
     
     
