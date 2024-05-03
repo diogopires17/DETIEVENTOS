@@ -47,7 +47,8 @@ def home():
     name  = session.get('user_name')
     if name is  not None:
         user = True
-    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name)
+    event = get_events()
+    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name, event=event)
 
 
 
@@ -92,7 +93,7 @@ def criar():
         event_date = request.form['eventDate']
         #colaborator = request.form['colaborator']
         vagas = 0
-        image = '/static/img/mobile.jpg'
+        image = 'static/img/mobile.jpg'
         lotacao = request.form['eventCapacity']
         colaborator = 'NEI'
         preco =  request.form['eventPrice']
@@ -104,7 +105,7 @@ def criar():
         cursor.execute("SELECT id FROM users WHERE email = ?", (session_email,))
         user_id = cursor.fetchone()[0]
         try:
-            cursor.execute("INSERT INTO events (name, description, location, date, user_id, colaborator, lotacao, preco, image) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?  )", (eventName, event_description, event_location, event_date, user_id, colaborator, lotacao, preco, image))
+            cursor.execute("INSERT INTO events (name, description, location, date, user_id, colaborator, vagas, lotacao, preco, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (eventName, event_description, event_location, event_date, user_id, colaborator, 0, lotacao, preco, image))           
             connection.commit()
             flash('Event created successfully', category='success')
             return redirect('/')
@@ -143,6 +144,64 @@ def search():
     return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name)
 
 
+@app.route('/update/<int:event_id>', methods=['GET', 'POST'])
+def update_event(event_id):
+    if 'user_email' not in session:
+        flash("You must be logged in to access this page", category='error')
+        return redirect('/login')
+
+    if session['user_email'] != "admin@gmail.com":
+        flash("Não tem permissões para aceder aqui", category='error')
+        return redirect('/')
+
+    if request.method == 'POST':
+        eventName = request.form['eventName']
+        eventDescription = request.form['eventDescription']
+        eventLocation = request.form['eventLocation']
+        eventDate = request.form['eventDate']
+        eventCapacity = request.form['eventCapacity']
+        eventPrice = request.form['eventPrice']
+
+        try:
+            connection = sqlite3.connect('data.db')
+            cursor = connection.cursor()
+            cursor.execute("""
+                UPDATE events 
+                SET name=?, description=?, location=?, date=?, lotacao=?, preco=?
+                WHERE id=?
+            """, (eventName, eventDescription, eventLocation, eventDate, eventCapacity, eventPrice, event_id))
+            connection.commit()
+            flash('Event updated successfully', category='success')
+            return redirect('/')
+        except sqlite3.Error as e:
+            print("Error updating event:", e)
+            flash('An error occurred while updating the event', category='error')
+            return redirect('/')
+        finally:
+            if connection:
+                connection.close()
+
+    else:
+        events = get_events()
+        for event in events:
+            if event[0] == event_id:
+                eventName = event[1]
+                eventDescription = event[2]
+                eventLocation = event[3]
+                eventDate = event[5]
+                eventCapacity = event[9]
+                print(eventCapacity)
+                eventPrice = event[10]
+                print(eventPrice)
+                eventImage = event[4]
+                print(eventImage)
+
+                return render_template('update.html', eventName=eventName, eventDescription=eventDescription, eventLocation=eventLocation, eventDate=eventDate, eventCapacity=eventCapacity, eventPrice=eventPrice, event_id=event_id, eventImage=eventImage)
+
+        flash('Event not found', category='error')
+        return redirect('/')
+    
+
 @app.route('/logout')
 def logout():
     session.pop('user_email', None)
@@ -164,7 +223,23 @@ def search_events(search_term):
     except Exception as e:
         print("ERRO" + e)
         return None
-    
+# funcao para ter o id
+
+
+def get_event_by_id(event_id):
+    try:
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM events WHERE id = ?", (event_id,))
+        event = cursor.fetchone()
+        return event
+    except sqlite3.Error as e:
+        print("Error retrieving event:", e)
+        return None
+    finally:
+        if connection:
+            connection.close()
+
     
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

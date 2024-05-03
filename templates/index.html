@@ -70,10 +70,14 @@
     <h1>Próximos Eventos</h1>
     {% if is_admin %}
     <button class="create-event-button">Criar Evento</button>
-    {% endif %}
+    {% endif %}~
   </div>
         <div class="event-card-container">
           {% for event in events %}
+          {% if is_admin %}
+          <button class="edit-event-button" onclick="window.location.href='/update/{{ event[0] }}'">Editar</button>
+          {% endif %}
+
           <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover;">
             <div class="event-content">
               <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
@@ -139,18 +143,15 @@
             <label for="eventLocation">Local do evento:</label><br>
             <input type="text" id="eventLocation" name="eventLocation"><br>
             <label for="eventTime">Vagas</label><br>
-            <input type="number" id="eventCapacity" name="eventCapacity"><br>
+            <input type="number" min = "0"  id="eventCapacity" name="eventCapacity"><br>
             <label for="eventDate">Data:</label><br>
             <input type="date" id="eventDate" name="eventDate"><br>
             <label for="eventDescription">Descrição do evento:</label><br>
             <textarea id="eventDescription" name="eventDescription"></textarea><br>
             <label for="eventPrice">Preço:</label><br>
-            <input type="number" id="eventPrice" name="eventPrice"><br>
-            <input type="submit" value="Criar Evento">
-
+            <input type="number" min= "0" id="eventPrice" name="eventPrice"><br>
+            <input type="submit"  value="Criar Evento">
           </form>
-
-      
         </div>
       </div>
     </div>
