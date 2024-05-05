@@ -30,7 +30,7 @@ def format_date(value, format='%d-%B'):
 
 @app.route('/')
 def home():
-    print(session)
+    #print(session)
     if 'user_email' not in session:
         return redirect(url_for('login'))  
     
@@ -114,14 +114,51 @@ def criar():
             print( e)
             return "An error occurred while creating the event" 
         
-        
-@app.route('/eventos')
-def about():
-    return render_template('eventos.html')
+
+@app.route('/teste')
+def teste():
+    print(session)
+    events = get_events()
+    
+    converted_events = []
+    for event in events:
+        converted_event = list(event)
+        converted_event[5] = datetime.strptime(event[5], '%Y-%m-%d').date()
+        converted_events.append(tuple(converted_event))
+    
+    converted_events.sort(key=lambda x: x[5])
+
+    user =  'user_email' in session
+    
+    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=1, name="User1", user = user)
+
 
 @app.route('/perfil')
 def perfil():
     return render_template('perfil.html')
+
+@app.route('/search_meus', methods=['GET'])
+def searchmeus():
+    search_term = request.args.get('q', '')  
+    events = search_events(search_term)
+
+    if events is None:
+        flash('An error occurred while searching for events', category='error')
+        return redirect('/')
+
+    converted_events = []
+    for event in events:
+        converted_event = list(event)
+        converted_event[5] = datetime.strptime(event[5], '%Y-%m-%d').date()
+        converted_events.append(tuple(converted_event))
+
+    is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
+    name = session.get('user_name')
+    user = 'user_email' in session
+    user_id = 1
+
+    return render_template('eventos.html', events=converted_events, is_admin=is_admin, user_id=user_id, name=name)
+
 
 @app.route('/search', methods=['GET'])
 def search():
