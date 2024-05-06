@@ -13,7 +13,7 @@ def init_db():
     password TEXT NOT NULL
     );""")
     cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'admin@gmail.com', 'admin', 'admin')""")
-    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user1@gmail.com', 'User1', '1' )""")
+    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user1@gmail.com', 'António', '1' )""")
     cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user2@gmail.com', 'User2', '2' )""")
 
     cursor.execute("""DROP TABLE IF EXISTS events""")
@@ -32,6 +32,11 @@ def init_db():
     FOREIGN KEY(user_id) REFERENCES users(id)
     );""")
 
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'static/img/android.png', '2024-06-27',1, 'NEECT', 15, 20, 0)""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 2, 'NEECT', 10, 15, 10 )""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-05-07', 2, 'NEI', 30,30, 3)""")   
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-15', 1, 'NEET', 10, 12, 5)""")    
+    
     cursor.execute("""DROP TABLE IF EXISTS user_events""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS user_events (
     user_id INTEGER,
@@ -40,10 +45,13 @@ def init_db():
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(event_id) REFERENCES events(id)
     );""")
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'static/img/android.png', '2024-06-27',1, 'NEECT', 15, 20, 0)""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 2, 'NEECT', 10, 15, 10 )""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-05-07', 2, 'NEI', 30,30, 3)""")   
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-15', 1, 'NEET', 10, 12, 5)""")    
+    cursor.execute("""INSERT OR IGNORE INTO user_events VALUES (2, 1)""")
+    cursor.execute("""INSERT OR IGNORE INTO user_events VALUES (2, 4)""")
+
+
+
+
+   
     
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', '16-09-2024', 'C Workshop', 'DETI', 1)""")
     #cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C++', '16-09-2024', 'C++ Workshop', 'DETI', 1)""")
@@ -52,7 +60,14 @@ def init_db():
     connection.commit()
 
 #                               FUNÇÕES AUXILIARES
-
+def get_user_id(email):
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
+    cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
+    user_id = cursor.fetchall()
+    if len(user_id) == 0:
+        return None
+    return user_id[0][0]
 def authenticate_user(email, password):
     if '/' in email:
         return False, "email can't contain character '/'"
@@ -83,4 +98,25 @@ def get_events():
         print(e)
         return None
     
+def get_user_events(user_id):
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
     
+    try:
+        cursor.execute("SELECT * FROM user_events WHERE user_id = ?", (user_id,))
+        results = cursor.fetchall()
+        return results
+    except Exception as e:
+        print(e)
+        return None
+    
+def get_user_associated_events(user_id):
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
+    cursor.execute("""
+    SELECT events.* 
+    FROM events 
+    JOIN user_events ON events.id = user_events.event_id 
+    WHERE user_events.user_id = ?
+    """, (user_id,))
+    return cursor.fetchall()

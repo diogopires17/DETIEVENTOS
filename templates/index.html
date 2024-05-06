@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/static/css/navbar_style.css">
   <link rel="stylesheet" href="/static/css/style.css">
   <link rel="stylesheet" href="/static/css/pop_up.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <title>Página Principal</title>
 </head>
 
@@ -65,40 +66,43 @@
     </div>
   </nav>
 
-  <!-- Proximos Eventos -->
-  <div class="events-header">
-    <h1>Próximos Eventos</h1>
-    {% if is_admin %}
-    <button class="create-event-button">Criar Evento</button>
-    {% endif %}
-  </div>
-        <div class="event-card-container">
-          {% for event in events %}
-          {% if is_admin %}
-          <button class="edit-event-button" onclick="window.location.href='/update/{{ event[0] }}'">Editar</button>
-          {% endif %}
-
-          <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover;">
-            <div class="event-content">
-              <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
-              <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
-            </div>
-            <div class="event-info">
-              <h2 class="event-title">{{event[1]}}</h2>
-              <div class="event-details">
-                <p class="event-details-btn">Ver detalhes</p>
-                
-                <p class = "event-status-btn"> {{event[8]}}/ {{event[9]}}</p>
-              </div>
-            </div>
+<!-- Proximos Eventos -->
+<div class="events-header">
+  <h1>Próximos Eventos</h1>
+  {% if is_admin %}
+  <button class="create-event-button">Criar Evento</button>
+  {% endif %}
+</div>
+<div class="event-card-container">
+  {% for event in events %}
+  <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover;">
+      {% if is_admin %}
+      <button class="edit-event-button" onclick="window.location.href='/update/{{ event[0] }}'">
+          <i class="fas fa-pencil-alt"></i>
+      </button>
+      {% endif %}
+      <div class="event-content">
+          <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
+          <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
+      </div>
+      <div class="event-info">
+          <h2 class="event-title">{{event[1]}}</h2>
+          <div class="event-details">
+              <p class="event-details-btn">Ver detalhes</p>
+              <p class="event-status-btn"> {{event[8]}}/ {{event[9]}}</p>
+              {% if not is_admin %}
+              <form method="POST" action="/inscrever/{{ event[0] }}">
+                  <button type="submit" class="inscrever-button">Inscrever</button>
+              </form>
+              {% endif %}
           </div>
-        {% endfor %}
       </div>
   </div>
-  </div>
-  <div class="view-all-container">
-    <button class="view-all-button">Ver Todos</button>
-  </div>
+  {% endfor %}
+</div>
+<div class="view-all-container">
+  <button class="view-all-button">Ver Todos</button>
+</div>
 
 
   <!-- Pop up -->

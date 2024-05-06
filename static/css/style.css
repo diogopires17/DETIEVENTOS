@@ -240,3 +240,18 @@ h2 {
     max-height: 100%;
     object-fit: cover;
 }
+
+.edit-event-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #000;
+}
+
+.event-content, .event-info, .event-details, .event-title, .event-details-btn, .event-status-btn {
+    color: white;
+    -webkit-text-stroke: 1px black;
+}

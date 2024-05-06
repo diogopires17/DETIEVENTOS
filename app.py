@@ -31,6 +31,8 @@ def format_date(value, format='%d-%B'):
 @app.route('/')
 def home():
     #print(session)
+    user_id = get_user_id(session.get('user_email'))
+    print(user_id)
     if 'user_email' not in session:
         return redirect(url_for('login'))  
     
@@ -117,8 +119,8 @@ def criar():
 
 @app.route('/teste')
 def teste():
-    print(session)
-    events = get_events()
+    # Fetch events associated with user 2
+    events = get_user_associated_events(2)
     
     converted_events = []
     for event in events:
@@ -127,10 +129,10 @@ def teste():
         converted_events.append(tuple(converted_event))
     
     converted_events.sort(key=lambda x: x[5])
-
-    user =  'user_email' in session
     
-    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=1, name="User1", user = user)
+    user = 'user_email' in session
+    
+    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=2, name="António", user=user)
 
 
 @app.route('/perfil')
@@ -155,7 +157,7 @@ def searchmeus():
     is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
     name = session.get('user_name')
     user = 'user_email' in session
-    user_id = 1
+    user_id = 2
 
     return render_template('eventos.html', events=converted_events, is_admin=is_admin, user_id=user_id, name=name)
 
@@ -238,7 +240,32 @@ def update_event(event_id):
         flash('Event not found', category='error')
         return redirect('/')
     
+@app.route('/inscrever/<int:event_id>', methods=['POST'])
+def inscrever(event_id):
+    if 'user_email' not in session:
+        flash("You must be logged in to access this page", category='error')
+        return redirect('/login')
 
+    user_email = session.get('user_email')
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
+    cursor.execute("SELECT id FROM users WHERE email = ?", (user_email,))
+    user_id = 2
+
+    try:
+        cursor.execute("INSERT INTO user_events (user_id, event_id) VALUES (?, ?)", (user_id, event_id)) 
+        connection.commit()
+        flash('Inscrição realizada com sucesso', category='success')
+        return redirect('/')
+    except sqlite3.Error as e:
+        print("Error inserting user event:", e)
+        flash('An error occurred while registering for the event', category='error')
+        return redirect('/')
+    finally:
+        if connection:
+            connection.close()
+
+    
 @app.route('/logout')
 def logout():
     session.pop('user_email', None)

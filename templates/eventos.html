@@ -73,9 +73,8 @@
         {% endif %}
     </div>
     <div class="event-card-container">
-        {% for event in events %}
-        {% if user_id == event[6] %}
-        {% if is_admin or user_id == event[6] %} 
+      {% for event in events %}
+      {% if is_admin or user_id == event[6] %}
         <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover;">
         <div class="event-content">
             <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
@@ -89,7 +88,6 @@
             </div>
         </div>
         </div>
-        {% endif %}
         {% endif %}
         {% endfor %}
     </div>
