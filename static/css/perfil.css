@@ -12,7 +12,7 @@ h2 {
 
 .sidebar {
     background-color: #f8f9fa;
-    padding: 20px;
+    padding: 40px;
     height: 100%;
 }
 
@@ -28,6 +28,7 @@ h2 {
 .user-links {
     list-style: none;
     padding: 0;
+    margin-top: 40px\;
 }
 
 .user-links li a {
@@ -38,7 +39,7 @@ h2 {
 }
 
 .main-content {
-    padding: 20px;
+    padding: 0px 40px;
 }
 
 .filters {

@@ -152,17 +152,17 @@ h2 {
 .event-card-container {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .event-card {
     position: relative;
-    width: 270px;
-    height: 25rem;
+    width: 300px;
+    height: 22rem;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    margin-right: 20px;
     background: #fff;
 }
 
@@ -187,7 +187,7 @@ h2 {
 
 .event-info {
     position: absolute;
-    top: 50%;
+    top: 45%;
     padding-right: 10px;
 }
 
