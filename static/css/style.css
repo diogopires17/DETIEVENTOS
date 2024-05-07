@@ -93,15 +93,19 @@ h2 {
 
 .events-header {
     display: flex;
+    margin-bottom: 20px;
+    margin-top: 20px;
     justify-content: space-between;
     align-items: center;
 }
 
 .create-event-button {
     padding: 10px 20px;
-    background-color: black;
-    color: white;
-    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
@@ -115,6 +119,7 @@ h2 {
 
 .view-all-container {
     display: flex;
+    margin-top: 20px;
     justify-content: flex-end;
 }
 
@@ -127,6 +132,11 @@ h2 {
     border-radius: 4px;
     cursor: pointer;
     text-align: left;
+}
+
+.view-all-button a {
+    text-decoration: none;
+    color: black;
 }
 
 .flash-error {
@@ -155,6 +165,10 @@ h2 {
     overflow: hidden;
     margin-right: 20px;
     background: #fff;
+}
+
+.event-card:hover {
+    cursor: pointer;
 }
 
 .event-date {
@@ -219,6 +233,7 @@ h2 {
 }
 
 .event-day {
+    margin-top: -10px;
     font-size: 44px;
 }
 
@@ -242,16 +257,20 @@ h2 {
 }
 
 .edit-event-button {
+    color: #11CF01;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    left: 15px;
     background: none;
     border: none;
     font-size: 20px;
-    color: #000;
 }
 
-.event-content, .event-info, .event-details, .event-title, .event-details-btn, .event-status-btn {
+.event-content,
+.event-info,
+.event-details,
+.event-title,
+.event-details-btn,
+.event-status-btn {
     color: white;
-    -webkit-text-stroke: 1px black;
 }
