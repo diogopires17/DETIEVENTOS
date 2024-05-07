@@ -52,7 +52,29 @@ def home():
     event = get_events()
     return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name, event=event)
 
-
+@app.route('/todos_os_eventos')
+def todos_os_eventos():
+    #print(session)
+    user_id = get_user_id(session.get('user_email'))
+    print(user_id)
+    if 'user_email' not in session:
+        return redirect(url_for('login'))  
+    
+    events = get_events()
+    
+    converted_events = []
+    for event in events:
+        converted_event = list(event)
+        converted_event[5] = datetime.strptime(event[5], '%Y-%m-%d').date()
+        converted_events.append(tuple(converted_event))
+    converted_events.sort(key=lambda x: x[5])
+    
+    is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
+    name  = session.get('user_name')
+    if name is  not None:
+        user = True
+    event = get_events()
+    return render_template('todos_os_eventos.html', events=converted_events, is_admin=is_admin, user=user, name=name, event=event)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
