@@ -139,8 +139,8 @@ def criar():
             return "An error occurred while creating the event" 
         
 
-@app.route('/teste')
-def teste():
+@app.route('/meus_eventos')
+def meus_eventos():
     # Fetch events associated with user 2
     events = get_user_associated_events(2)
     
