@@ -98,24 +98,6 @@
   <div class="view-all-container">
     <button class="view-all-button" onclick="window.location.href = '/todos_os_eventos'">Ver Todos</button>
   </div>
-        <h2 class="event-title">{{event[1]}}</h2>
-        <div class="event-details">
-            <p class="event-details-btn">Ver detalhes</p>
-            <p class="event-status-btn"> {{event[8]}}/ {{event[9]}}</p>
-            {% if not is_admin %}
-            <form method="POST" action="/inscrever/{{ event[0] }}">
-                <button type="submit" class="inscrever-button">Inscrever</button>
-            </form>
-            {% endif %}
-        </div>
-    </div>
-</div>
-{% endfor %}
-</div>
-
-<div class="view-all-container">
-  <button class="view-all-button" onclick = "window.location.href = '/todos_os_eventos'">Ver Todos</button>
-</div>
 
 
   <!-- Pop up -->
