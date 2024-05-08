@@ -26,7 +26,9 @@
 
   <!-- Navbar -->
   <nav class="navbar_style navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">LOGO</a>
+    <a href="/">
+      <img src="/static/images/DETI.svg" alt="DETI Logo">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -91,6 +93,11 @@
           <p class="event-details-btn">Ver detalhes</p>
           <p class="event-status-btn"> {{event[8]}}/ {{event[9]}}</p>
         </div>
+        {% if not is_admin %}
+        <form method="POST" action="/inscrever/{{ event[0] }}">
+            <button type="submit" class="inscrever-button">Inscrever</button>
+        </form>
+        {% endif %}
       </div>
     </div>
     {% endfor %}

@@ -6,6 +6,14 @@
     font-size: 1.2rem !important;
 }
 
+.navbar_style img {
+    height: 30px;
+}
+
+.nav-item {
+    margin-left: 20px !important;
+}
+
 .navbar_style_links:hover {
     color: #11CF01 !important;
     text-decoration: none !important;

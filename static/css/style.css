@@ -289,5 +289,14 @@ h2 {
 
 .edit-event-button::before,
 .edit-event-button::after {
-  pointer-events: none;
+    pointer-events: none;
+}
+
+.inscrever-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
