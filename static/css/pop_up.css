@@ -75,7 +75,6 @@
   font-weight: bold;
 
   border: 2px solid rgb(0, 0, 0);
-  /* texto alinhado verticalmente */
 
   display: flex;
   justify-content: center;
@@ -87,7 +86,112 @@
   color: rgb(255, 255, 255);
 }
 
+.pop_up_add_categoria {
+  background-color: transparent;
+  height: 40px;
+  border-radius: 10px;
+  margin-top: 25px;
+
+  text-align: center;
+  line-height: 40px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+
+  border: 2px solid rgb(0, 0, 0);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pop_up_add_categoria:hover {
+  background-color: #1E9D13;
+  color: rgb(255, 255, 255);
+}
+
 #eventDescription {
   height: 10rem;
   width: 60%;
+}
+
+/* Nome */
+
+.pop_up_formulario {
+  display: flex;
+  justify-content: space-between;
+}
+
+#eventName {
+  display: none;
+}
+
+.popup_nome_evento {
+  font-size: 3rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+/* Data */
+
+.popup_data {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+/* Descrição */
+
+.popup_descricao {
+  background-color: transparent;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.3rem;
+}
+
+/* Localização */
+
+.popup_localizacao {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+#eventLocation {
+  display: none;
+}
+
+/* Preço */
+
+.popup_preco {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+#eventPrice {
+  display: none;
+}
+
+/* Lotação */
+.popup_locatacao {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+/* Criar evento botão */
+.popup_criar_botao {
+  background-color: #1E9D13;
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+}
+
+.popup_criar_botao:hover {
+  background-color: #000000;
+  color: #ffffff;
 }
