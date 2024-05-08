@@ -257,6 +257,7 @@ h2 {
 }
 
 .edit-event-button {
+    box-sizing: border-box;
     color: #11CF01;
     position: absolute;
     top: 15px;
@@ -264,6 +265,7 @@ h2 {
     background: none;
     border: none;
     font-size: 20px;
+    z-index: 1;
 }
 
 .event-content,
@@ -273,4 +275,9 @@ h2 {
 .event-details-btn,
 .event-status-btn {
     color: white;
+}
+
+.edit-event-button::before,
+.edit-event-button::after {
+  pointer-events: none;
 }

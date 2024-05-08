@@ -98,6 +98,24 @@
   <div class="view-all-container">
     <button class="view-all-button" onclick="window.location.href = '/todos_os_eventos'">Ver Todos</button>
   </div>
+        <h2 class="event-title">{{event[1]}}</h2>
+        <div class="event-details">
+            <p class="event-details-btn">Ver detalhes</p>
+            <p class="event-status-btn"> {{event[8]}}/ {{event[9]}}</p>
+            {% if not is_admin %}
+            <form method="POST" action="/inscrever/{{ event[0] }}">
+                <button type="submit" class="inscrever-button">Inscrever</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+<div class="view-all-container">
+  <button class="view-all-button" onclick = "window.location.href = '/todos_os_eventos'">Ver Todos</button>
+</div>
 
 
   <!-- Pop up -->
@@ -342,70 +360,6 @@
         });
       });
     });
-  </script>
-
-  <script>
-    window.onload = function () {
-      document.querySelectorAll('.event-details-btn').forEach(function (button) {
-        button.addEventListener('click', function () {
-          var eventCard = this.closest('.event-card');
-          var eventName = eventCard.querySelector('.event-title').textContent;
-          var eventDate = new Date(eventCard.querySelector('.event-day').textContent + ' ' +
-            eventCard.querySelector('.event-month').textContent);
-          var eventLocation = 'Local não especificado'; // Exemplo, você deve ajustar conforme necessário
-
-          // Preencher os campos do formulário no modal
-          document.getElementById('eventName').value = eventName;
-          document.getElementById('eventDate').value = eventDate.toISOString().split('T')[0]; // Formatar a data para o input tipo date
-          document.getElementById('eventLocation').value = eventLocation;
-
-          // Mostrar o modal
-          document.getElementById('myModal').style.display = 'block';
-        });
-      });
-
-      // Fechar o modal quando o usuário clicar no botão de fechar
-      document.querySelector('.close').addEventListener('click', function () {
-        document.getElementById('myModal').style.display = 'none';
-      });
-
-      // Fechar o modal quando o usuário clicar fora dele
-      window.addEventListener('click', function (event) {
-        var modal = document.getElementById('myModal');
-        if (event.target == modal) {
-          modal.style.display = 'none';
-        }
-      });
-    }
-  </script>
-
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var modal = document.getElementById('myModal');
-      var span = document.getElementsByClassName('close')[0];
-
-      // Manipulador para o botão de criar evento
-      var createBtns = document.querySelectorAll('.create-event-button, .event-details-btn'); // Adicionado o seletor para 'Ver detalhes'
-      createBtns.forEach(function (btn) {
-        btn.onclick = function () {
-          modal.style.display = 'block';
-        }
-      });
-
-      // Fechar o modal ao clicar no ícone de fechar
-      span.onclick = function () {
-        modal.style.display = 'none';
-      }
-
-      // Fechar o modal ao clicar fora dele
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = 'none';
-        }
-      }
-    });
-
   </script>
 
 </body>
