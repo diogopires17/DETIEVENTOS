@@ -199,7 +199,7 @@ h2 {
 
 .event-info {
     position: absolute;
-    top: 50%;
+    bottom: 10%;
     padding-right: 10px;
 }
 

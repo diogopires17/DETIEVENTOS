@@ -164,6 +164,7 @@ h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     background: #fff;
+    margin-bottom: 20px;
 }
 
 .event-card:hover {
@@ -197,7 +198,7 @@ h2 {
 
 .event-info {
     position: absolute;
-    top: 45%;
+    bottom: 10%;
     padding-right: 10px;
 }
 
