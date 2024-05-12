@@ -28,7 +28,7 @@ h2 {
 .user-links {
     list-style: none;
     padding: 0;
-    margin-top: 40px\;
+    margin-top: 40px;
 }
 
 .user-links li a {
@@ -40,22 +40,4 @@ h2 {
 
 .main-content {
     padding: 0px 40px;
-}
-
-.filters {
-    margin-bottom: 20px;
-}
-
-.event-cards .card {
-    width: 30%;
-    display: inline-block;
-    margin-right: 15px;
-}
-
-.card img {
-    width: 100%;
-}
-
-.card-body {
-    padding: 10px;
 }

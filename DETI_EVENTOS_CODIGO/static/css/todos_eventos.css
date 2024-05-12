@@ -230,6 +230,10 @@ h2 {
     background-color: green;
     color: white;
     font-size: 12px;
+    padding: 3px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .desinscrever-button {
