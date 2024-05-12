@@ -44,13 +44,19 @@ def home():
         converted_event[5] = datetime.strptime(event[5], '%Y-%m-%d').date()
         converted_events.append(tuple(converted_event))
     converted_events.sort(key=lambda x: x[5])
+
+    user_events = get_user_events(user_id)
+    user_events = list(user_events)
+    print (user_events[1][0])
+
+    
     
     is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
     name  = session.get('user_name')
     if name is  not None:
         user = True
     event = get_events()
-    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name, event=event)
+    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name, event=event,  user_id = user_id, user_events=user_events)
 
 @app.route('/todos_os_eventos')
 def todos_os_eventos():
