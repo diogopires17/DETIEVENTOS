@@ -157,8 +157,9 @@ def meus_eventos():
     converted_events.sort(key=lambda x: x[5])
     
     user = 'user_email' in session
+    name = session.get('user_name')
     
-    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=2, name="António", user=user)
+    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=2, name=name, user=user)
 
 
 @app.route('/perfil')
