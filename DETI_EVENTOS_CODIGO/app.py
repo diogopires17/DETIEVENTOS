@@ -47,8 +47,6 @@ def home():
 
     user_events = get_user_events(user_id)
     user_events = list(user_events)
-    print (user_events[1][0])
-
     
     
     is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
