@@ -146,7 +146,8 @@ h2 {
 
 .flash-error {
     color: white;
-    background-color: rgb(255, 71, 71);
+    /* background-color: rgb(255, 71, 71); */
+    background-color: #4CAF50;
 }
 
 .flash-success {
