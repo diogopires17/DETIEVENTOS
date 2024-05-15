@@ -50,71 +50,71 @@
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"
             aria-label="Botao_Pesquisar"></i></button>
       </form>
-     
-        {% if not user%}
-        <a class="nav-link ml-2 navbar_style_login" href="/login">
+
+      {% if not user%}
+      <a class="nav-link ml-2 navbar_style_login" href="/login">
         <img class="login-icon" src="static/images/user_icon.svg" alt="User Icon">
         Login
         {% endif %}
         {% if user %}
         <a class="nav-link ml-2 navbar_style_login" href="/meus_eventos">
-        <img class="login-icon" src="static/images/user_icon.svg" alt="User Icon">
-        {{ name }}
-        {% endif %}
+          <img class="login-icon" src="static/images/user_icon.svg" alt="User Icon">
+          {{ name }}
+          {% endif %}
 
-      </a>
+        </a>
 
-      <a class="nav-link ml-2 navbar_style_login" href="/logout">
-        Logout
-      </a>
+        <a class="nav-link ml-2 navbar_style_login" href="/logout">
+          Logout
+        </a>
     </div>
   </nav>
 
-  
+
 
   <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3 sidebar">
-            <div class="user-profile">
-                <img src="../static/images/user_icon.svg" alt="User Image" class="user-image">
-                <h3>{{name}}</h3>
-                <ul class="user-links">
-                    <li><a href="#">Meus Eventos</a></li>
-                    <li><a href="#">Alterar email</a></li>
-                    <li><a href="#">Notificações</a></li>
-                </ul>
-            </div>
+      <!-- Sidebar -->
+      <div class="col-md-3 sidebar">
+        <div class="user-profile">
+          <img src="../static/images/user_icon.svg" alt="User Image" class="user-image">
+          <h3>{{name}}</h3>
+          <ul class="user-links">
+            <li><a href="#">Meus Eventos</a></li>
+            <li><a href="#">Alterar email</a></li>
+            <li><a href="#">Notificações</a></li>
+          </ul>
         </div>
-        <!-- Meus Eventos -->
-        <div class="col-md-9">
-            <div class="events-header">
-                <h1> Meus Eventos</h1>
-                {% if is_admin %}
-                <button class="create-event-button">Criar Evento</button>
-                {% endif %}
-            </div>
-            <div class="event-card-container">
-                {% for event in events %}
-                {% if is_admin or user_id == event[6] %}
-                <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover;">
-                    <div class="event-content">
-                        <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
-                        <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
-                    </div>
-                    <div class="event-info">
-                        <h2 class="event-title">{{event[1]}}</h2>
-                        <div class="event-details">
-                            <p class="event-details-btn">Ver detalhes</p>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-            </div>
+      </div>
+      <!-- Meus Eventos -->
+      <div class="col-md-9">
+        <div class="events-header">
+          <h1> Meus Eventos</h1>
+          {% if is_admin %}
+          <button class="create-event-button">Criar Evento</button>
+          {% endif %}
         </div>
+        <div class="event-card-container">
+          {% for event in events %}
+          {% if is_admin or user_id == event[6] %}
+          <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover;">
+            <div class="event-content">
+              <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
+              <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
+            </div>
+            <div class="event-info">
+              <h2 class="event-title">{{event[1]}}</h2>
+              <div class="event-details">
+                <p class="event-details-btn">Ver detalhes</p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
     </div>
-</div>
+  </div>
   <!-- Pop up -->
   <div id="myModal" class="modal">
     <div class="modal-content">
@@ -128,64 +128,66 @@
           <!-- Botão + para dar upload imagem -->
           <div class="pop_up_image_upload">
             <label for="file" class="pop_up_image_upload_label">
-              <input class="pop_up_input_image" type="file" id="file" aria-label="pop_up_input_images" onchange="previewImage()">
+              <input class="pop_up_input_image" type="file" id="file" aria-label="pop_up_input_images"
+                onchange="previewImage()">
               <i class="fas fa-plus"></i>
             </label>
           </div>
 
-           <!-- Scripts -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script>
-    setTimeout(function () {
-      const flashMessage = document.getElementById('flash-message');
-      if (flashMessage) flashMessage.style.display = 'none';
-    }, 2000);
+          <!-- Scripts -->
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+          <script>
+            setTimeout(function () {
+              const flashMessage = document.getElementById('flash-message');
+              if (flashMessage) flashMessage.style.display = 'none';
+            }, 2000);
 
-    var modal = document.getElementById("myModal");
-    var btn = document.getElementsByClassName("create-event-button")[0];
-    var span = document.getElementsByClassName("close")[0];
+            var modal = document.getElementById("myModal");
+            var btn = document.getElementsByClassName("create-event-button")[0];
+            var span = document.getElementsByClassName("close")[0];
 
-    btn.onclick = function () {
-      modal.style.display = "block";
-    }
+            btn.onclick = function () {
+              modal.style.display = "block";
+            }
 
-    span.onclick = function () {
-      modal.style.display = "none";
-    }
+            span.onclick = function () {
+              modal.style.display = "none";
+            }
 
-    window.onclick = function (event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-  </script>
+            window.onclick = function (event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
+          </script>
 
-  <script>
-    window.onload = function() {
-      var isAdmin = {{ is_admin|tojson }};
-      var createEventButton = document.querySelector('.create-event-button');
-      
-      if (!isAdmin) {
-        createEventButton.style.display = 'none';
-      }
+          <script>
+            window.onload = function () {
+              var isAdmin = {{ is_admin| tojson
+            }};
+            var createEventButton = document.querySelector('.create-event-button');
+
+            if (!isAdmin) {
+              createEventButton.style.display = 'none';
+            }
     }
-  </script>
-  
-<script>
-  function previewImage() {
-    const preview = document.getElementById('preview');
-    const file = document.querySelector('input[type=file]').files[0];
-    const reader = new FileReader();
-  
-    reader.addEventListener("load", function () {
-      // convert image file to base64 string
-      preview.src = reader.result;
-    }, false);
-  
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  }
-</script>
+          </script>
+
+          <script>
+            function previewImage() {
+              const preview = document.getElementById('preview');
+              const file = document.querySelector('input[type=file]').files[0];
+              const reader = new FileReader();
+
+              reader.addEventListener("load", function () {
+                // convert image file to base64 string
+                preview.src = reader.result;
+              }, false);
+
+              if (file) {
+                reader.readAsDataURL(file);
+              }
+            }
+          </script>
