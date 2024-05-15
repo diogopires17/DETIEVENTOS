@@ -2,11 +2,11 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: white;
 }
 
 .login-content {
-    width: 300px;
+    width: 350px;
     margin: 50px auto;
     padding: 20px;
     background-color: white;
