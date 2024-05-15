@@ -12,17 +12,30 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="icon" href="/static/images/logo_icon.svg">
 
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
   <title>Todos os Eventos</title>
 </head>
 
 <body>
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-  {% for category, message in messages %}
-  <div id="flash-message" class="alert alert-{{ category }} flash-error">
-    {{ message }}
-  </div>
-  {% endfor %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      {% for category, message in messages %}
+      Swal.fire({
+        icon: '{{ category }}',
+        title: '{{ category }}',
+        text: '{{ message }}',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'custom-ok-button'
+        }
+      });
+      {% endfor %}
+    });
+  </script>
   {% endif %}
   {% endwith %}
 
@@ -396,6 +409,9 @@
 
 
   <!-- Scripts -->
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

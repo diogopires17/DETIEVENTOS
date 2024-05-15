@@ -8,24 +8,25 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/update.css">
   <link rel="icon" href="/static/images/logo_icon.svg">
+
   <title>Eventos</title>
 </head>
 
 
 <form action="/update/{{ event_id }}" method="post">
-    <h2>Editar Evento</h2>
-    <label for="eventName">Nome do evento:</label><br>
-    <input type="text" id="eventName" name="eventName" value="{{ eventName }}"><br>
-    <label for="eventLocation">Local do evento:</label><br>
-    <input type="text" id="eventLocation" name="eventLocation" value="{{ eventLocation }}"><br>
-    <label for="eventTime">Lotação</label><br>
-    <input type="number" min = "0" id="eventCapacity" name="eventCapacity" value="{{ eventCapacity }}"><br>
-    <label for="eventDate">Data:</label><br>
-    <input type="date" id="eventDate" name="eventDate" value="{{ eventDate }}"><br>
-    <label for="eventDescription">Descrição do evento:</label><br>
-    <textarea id="eventDescription" name="eventDescription">{{ eventDescription }}</textarea><br>
-    <img src= "/{{eventImage}}" alt="event image" width="100" height="100">
-    <label for="eventPrice">Preço:</label><br>
-    <input type="number" min = "0" id="eventPrice" name="eventPrice" value="{{ eventPrice}}"><br>
-    <input type="submit" value="Atualizar Evento">
-  </form>
+  <h2>Editar Evento</h2>
+  <label for="eventName">Nome do evento:</label><br>
+  <input type="text" id="eventName" name="eventName" value="{{ eventName }}"><br>
+  <label for="eventLocation">Local do evento:</label><br>
+  <input type="text" id="eventLocation" name="eventLocation" value="{{ eventLocation }}"><br>
+  <label for="eventTime">Lotação</label><br>
+  <input type="number" min="0" id="eventCapacity" name="eventCapacity" value="{{ eventCapacity }}"><br>
+  <label for="eventDate">Data:</label><br>
+  <input type="date" id="eventDate" name="eventDate" value="{{ eventDate }}"><br>
+  <label for="eventDescription">Descrição do evento:</label><br>
+  <textarea id="eventDescription" name="eventDescription">{{ eventDescription }}</textarea><br>
+  <img src="/{{eventImage}}" alt="event image" width="100" height="100">
+  <label for="eventPrice">Preço:</label><br>
+  <input type="number" min="0" id="eventPrice" name="eventPrice" value="{{ eventPrice}}"><br>
+  <input type="submit" value="Atualizar Evento">
+</form>
