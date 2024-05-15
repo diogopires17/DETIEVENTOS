@@ -84,9 +84,12 @@
     {% for event in events %}
     <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover; margin: 20px;">
       {% if is_admin %}
-      <button class="edit-event-button" onclick="window.location.href='/update/{{ event[0] }}'">
+      <button class="edit-event-button" data-event-id="{{ event[0] }}" data-event-name="{{ event[1] }}"
+        data-event-location="{{ event[6] }}" data-event-capacity="{{ event[8] }}" data-event-date="{{ event[5] }}"
+        data-event-description="{{ event[2] }}" data-event-image="{{ event[4] }}" data-event-price="{{ event[9] }}">
         <i class="fas fa-pencil-alt"></i>
       </button>
+
       {% endif %}
       <div class="event-content">
         <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
@@ -128,6 +131,46 @@
     <button class="view-all-button" onclick="window.location.href = '/todos_os_eventos'">Ver Todos</button>
   </div>
 
+  <!-- Pop Up - Atualizar Evento -->
+  <div id="myModal_update" class="modal">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="pop_up_image_rectangle">
+            <img id="update_preview" src="" alt="Image preview" />
+          </div>
+        </div>
+        <div class="col-md-9">
+          <span id="close_update" class="close">&times;</span>
+          <form id="updateForm" action="/update/{{ event_id }}" method="post">
+            <!-- Formulário do update -->
+            <div class="pop_up_formulario">
+              <div>
+                <span class="popup_nome_evento">Editar Evento</span><br>
+                <label for="eventName">Nome do evento:</label><br>
+                <input type="text" id="update_eventName" name="eventName" value="{{ eventName }}"><br>
+              </div>
+              <div style="padding-right: 50px; padding-top: 15px;">
+                <label for="eventLocation">Local do evento:</label><br>
+                <input type="text" id="update_eventLocation" name="eventLocation" value="{{ eventLocation }}"><br>
+              </div>
+            </div>
+            <label for="eventTime">Lotação</label><br>
+            <input type="number" min="0" id="update_eventCapacity" name="eventCapacity" value="{{ eventCapacity }}"><br>
+            <label for="eventDate">Data:</label><br>
+            <input type="date" id="update_eventDate" name="eventDate" value="{{ eventDate }}"><br>
+            <label for="eventDescription">Descrição do evento:</label><br>
+            <textarea id="update_eventDescription" name="eventDescription">{{ eventDescription }}</textarea><br>
+            <label for="eventPrice">Preço:</label><br>
+            <input type="number" min="0" id="update_eventPrice" name="eventPrice" value="{{ eventPrice}}"><br>
+            <input type="submit" value="Atualizar Evento">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Pop up- ver detalhes -->
   <div id="myModal_detalhes" class="modal">
     <div class="modal-content">
@@ -158,7 +201,7 @@
 
         <!-- Formulário -->
         <div class="col-md-9">
-          <span class="close">&times;</span>
+          <span id="close_details" class="close">&times;</span>
           <div class="pop_up_formulario">
             <!-- Nome -->
             <div>
@@ -489,7 +532,7 @@
   <script>
     var detailsModal = document.getElementById("myModal_detalhes");
     var detailsBtns = document.querySelectorAll(".event-details-btn");
-    var span = document.getElementsByClassName("close")[0];
+    var closeDetailsBtn = document.getElementById("close_details");
 
     detailsBtns.forEach(function (detailsBtn) {
       detailsBtn.onclick = function () {
@@ -523,7 +566,7 @@
       }
     });
 
-    span.onclick = function () {
+    closeDetailsBtn.onclick = function () {
       detailsModal.style.display = "none";
     }
 
@@ -532,9 +575,50 @@
         detailsModal.style.display = "none";
       }
     }
+
   </script>
 
 
+  <script>
+    var updateModal = document.getElementById("myModal_update");
+    var updateBtns = document.querySelectorAll(".edit-event-button");
+    var closeUpdateBtn = document.getElementById("close_update");
+
+    updateBtns.forEach(function (updateBtn) {
+      updateBtn.onclick = function () {
+        var eventId = this.getAttribute('data-event-id');
+        var eventName = this.getAttribute('data-event-name');
+        var eventLocation = this.getAttribute('data-event-location');
+        var eventCapacity = this.getAttribute('data-event-capacity');
+        var eventDate = this.getAttribute('data-event-date');
+        var eventDescription = this.getAttribute('data-event-description');
+        var eventImage = this.getAttribute('data-event-image');
+        var eventPrice = this.getAttribute('data-event-price');
+
+        document.getElementById('update_eventName').value = eventName;
+        document.getElementById('update_eventLocation').value = eventLocation;
+        document.getElementById('update_eventCapacity').value = eventCapacity;
+        document.getElementById('update_eventDate').value = eventDate;
+        document.getElementById('update_eventDescription').value = eventDescription;
+        document.getElementById('update_eventPrice').value = eventPrice;
+        document.getElementById('update_preview').src = eventImage;
+
+        document.getElementById('updateForm').action = "/update/" + eventId;
+        updateModal.style.display = "block";
+      }
+    });
+
+    closeUpdateBtn.onclick = function () {
+      updateModal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == updateModal) {
+        updateModal.style.display = "none";
+      }
+    }
+
+  </script>
 
 </body>
 
