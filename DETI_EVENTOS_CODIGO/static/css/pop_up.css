@@ -302,3 +302,48 @@
   background-color: #000000;
   color: #ffffff;
 }
+
+/* Carrossel */
+/* .carousel-control-prev, .carousel-control-next {
+  width: auto;
+  height: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-size: 2rem 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: #000;
+}
+
+.carousel-control-prev-icon::before, .carousel-control-next-icon::before {
+  font-size: 2rem;
+} */
+
+/* Estilos personalizados para as setas do carrossel */
+.carousel-control-prev, .carousel-control-next {
+  width: auto;
+  height: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000000;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: #000000;
+  background-size: 2rem 2rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+}
+
+.carousel-control-prev-icon::before, .carousel-control-next-icon::before {
+  font-size: 2rem;
+  color: white;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
