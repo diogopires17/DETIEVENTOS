@@ -146,29 +146,54 @@
             <!-- Formulário do update -->
             <div class="pop_up_formulario">
               <div>
-                <span class="popup_nome_evento">Editar Evento</span><br>
-                <label for="eventName">Nome do evento:</label><br>
+                <!-- Nome -->
+                <span class="popup_nome_evento_update" id="eventNameLabelUpdate">Inserir nome do evento</span><br>
                 <input type="text" id="update_eventName" name="eventName" value="{{ eventName }}"><br>
               </div>
               <div style="padding-right: 50px; padding-top: 15px;">
-                <label for="eventLocation">Local do evento:</label><br>
-                <input type="text" id="update_eventLocation" name="eventLocation" value="{{ eventLocation }}"><br>
+                <!-- Data -->
+                <span for="eventDate" class="popup_data_update">Data *</span><br>
+                <input class="popup_data_input_update" type="date" id="update_eventDate" name="eventDate"
+                  value="{{ eventDate }}"><br>
               </div>
             </div>
-            <label for="eventTime">Lotação</label><br>
-            <input type="number" min="0" id="update_eventCapacity" name="eventCapacity" value="{{ eventCapacity }}"><br>
-            <label for="eventDate">Data:</label><br>
-            <input type="date" id="update_eventDate" name="eventDate" value="{{ eventDate }}"><br>
-            <label for="eventDescription">Descrição do evento:</label><br>
-            <textarea id="update_eventDescription" name="eventDescription">{{ eventDescription }}</textarea><br>
-            <label for="eventPrice">Preço:</label><br>
-            <input type="number" min="0" id="update_eventPrice" name="eventPrice" value="{{ eventPrice}}"><br>
-            <input type="submit" value="Atualizar Evento">
+            <!-- Descrição -->
+            <textarea class="popup_descricao_update" placeholder="Descrição do evento" id="update_eventDescription"
+              name="eventDescription">{{ eventDescription }}</textarea><br>
+            <div class="pop_up_formulario" style="padding-top: 20px;">
+              <div>
+                <!-- Local -->
+                <span class="popup_localizacao_update">Localização: *</span><br>
+                <span class="popup_localizacao_update" id="eventLocationLabelUpdate">______</span><br>
+                <input type="text" id="update_eventLocation" name="eventLocation" value="{{ eventLocation }}"><br>
+              </div>
+              <div>
+                <!-- Lotação -->
+                <span class="popup_capacity_update">Lotação: *</span><br>
+                <span class="popup_capacity_update" id="eventCapacityLabelUpdate">______</span><br>
+                <input type="number" min="0" id="update_eventCapacity" name="eventCapacity"
+                  value="{{ eventCapacity }}"><br>
+              </div>
+              <div>
+                <!-- Preço -->
+                <span class="popup_preco_update">Preço: *</span><br>
+                <span class="popup_preco_update" id="eventPriceLabelUpdate">______</span><br>
+                <input type="number" min="0" id="update_eventPrice" name="eventPrice" value="{{ eventPrice }}"><br>
+              </div>
+              <div></div>
+              <!-- Botão Atualizar Evento -->
+              <input class="popup_criar_botao" type="submit" value="Atualizar Evento">
+            </div>
+            <div>
+              <!-- * Campos Obrigatórios -->
+              <span>* Campos Obrigatórios</span>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
+
 
 
   <!-- Pop up- ver detalhes -->
@@ -331,7 +356,6 @@
             </div>
 
             <!-- Descrição -->
-            <!-- <label for="eventDescription">Descrição do evento:</label><br> -->
             <textarea class="popup_descricao" id="eventDescription" name="eventDescription"
               placeholder="Descrição do evento"></textarea><br>
 
@@ -406,21 +430,7 @@
         }
       }
     }
-
   </script>
-
-  <script>
-    window.onload = function () {
-      var isAdmin = {{ is_admin| tojson
-    }};
-    var createEventButton = document.querySelector('.create-event-button');
-
-    if (!isAdmin) {
-      createEventButton.style.display = 'none';
-    }
-    }
-  </script>
-
   <script>
     function previewImage() {
       const preview = document.getElementById('preview');
@@ -437,39 +447,27 @@
       }
     }
   </script>
-
-  <!-- Pop Up -->
-  <!-- Atualiza os valores -->
   <script>
-    window.onload = function () {
+    function initializeCreateEventPopup() {
       var locationLabel = document.getElementById('eventLocationLabel');
       var locationInput = document.getElementById('eventLocation');
       var priceLabel = document.getElementById('eventPriceLabel');
       var priceInput = document.getElementById('eventPrice');
       var nameLabel = document.getElementById('eventNameLabel');
       var nameInput = document.getElementById('eventName');
-      var dateInput = document.getElementById('eventDate');
-      var dateLabel = document.getElementById('eventDateLabel');
       var capacityLabel = document.getElementById('eventCapacityLabel');
       var capacityInput = document.getElementById('eventCapacity');
 
       function setupLabelAndInput(label, input, initialText) {
-        // tornar o rótulo editável
         label.contentEditable = true;
-
-        // limpar o texto do rótulo quando ganha foco e o texto é o texto inicial
         label.addEventListener('focus', function () {
           if (this.innerText === initialText) {
             this.innerText = '';
           }
         });
-
-        // atualizar o valor do campo de entrada quando o rótulo é alterado
         label.addEventListener('input', function () {
           input.value = this.innerText;
         });
-
-        // desativar a edição e remover o foco quando a tecla Enter é pressionada
         label.addEventListener('keydown', function (e) {
           if (e.keyCode === 13) {
             e.preventDefault();
@@ -477,13 +475,9 @@
             this.contentEditable = false;
           }
         });
-
-        // reativar a edição quando o rótulo é pressionado
         label.addEventListener('mousedown', function () {
           this.contentEditable = true;
         });
-
-        // redefinir o texto para o valor inicial se o texto for totalmente apagado
         label.addEventListener('blur', function () {
           if (this.innerText.trim() === '') {
             this.innerText = initialText;
@@ -496,9 +490,63 @@
       setupLabelAndInput(nameLabel, nameInput, 'Inserir nome do evento');
       setupLabelAndInput(capacityLabel, capacityInput, '______');
     }
-  </script>
 
-  <!-- Colaborador -->
+    function initializeUpdateEventPopup() {
+      var locationLabelUpdate = document.getElementById('eventLocationLabelUpdate');
+      var locationInputUpdate = document.getElementById('update_eventLocation');
+      var priceLabelUpdate = document.getElementById('eventPriceLabelUpdate');
+      var priceInputUpdate = document.getElementById('update_eventPrice');
+      var nameLabelUpdate = document.getElementById('eventNameLabelUpdate');
+      var nameInputUpdate = document.getElementById('update_eventName');
+      var capacityLabelUpdate = document.getElementById('eventCapacityLabelUpdate');
+      var capacityInputUpdate = document.getElementById('update_eventCapacity');
+
+      function setupLabelAndInput(label, input, initialText) {
+        label.contentEditable = true;
+        label.addEventListener('focus', function () {
+          if (this.innerText === initialText) {
+            this.innerText = '';
+          }
+        });
+        label.addEventListener('input', function () {
+          input.value = this.innerText;
+        });
+        label.addEventListener('keydown', function (e) {
+          if (e.keyCode === 13) {
+            e.preventDefault();
+            this.blur();
+            this.contentEditable = false;
+          }
+        });
+        label.addEventListener('mousedown', function () {
+          this.contentEditable = true;
+        });
+        label.addEventListener('blur', function () {
+          if (this.innerText.trim() === '') {
+            this.innerText = initialText;
+          }
+        });
+      }
+
+      setupLabelAndInput(locationLabelUpdate, locationInputUpdate, '______');
+      setupLabelAndInput(priceLabelUpdate, priceInputUpdate, '______');
+      setupLabelAndInput(nameLabelUpdate, nameInputUpdate, 'Inserir nome do evento');
+      setupLabelAndInput(capacityLabelUpdate, capacityInputUpdate, '______');
+    }
+
+    window.onload = function () {
+      initializeCreateEventPopup();
+      initializeUpdateEventPopup();
+
+      var isAdmin = {{ is_admin | tojson
+    }};
+    var createEventButton = document.querySelector('.create-event-button');
+
+    if (!isAdmin) {
+      createEventButton.style.display = 'none';
+    }
+    }
+  </script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var dropdownItems = document.querySelectorAll('.colaborador-item');
@@ -512,8 +560,6 @@
       });
     });
   </script>
-
-  <!-- Categoria -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var dropdownItems = document.querySelectorAll('.categoria-item');
@@ -527,8 +573,6 @@
       });
     });
   </script>
-
-  <!-- Pop Up - Ver detalhes -->
   <script>
     var detailsModal = document.getElementById("myModal_detalhes");
     var detailsBtns = document.querySelectorAll(".event-details-btn");
@@ -575,10 +619,7 @@
         detailsModal.style.display = "none";
       }
     }
-
   </script>
-
-
   <script>
     var updateModal = document.getElementById("myModal_update");
     var updateBtns = document.querySelectorAll(".edit-event-button");
@@ -603,6 +644,12 @@
         document.getElementById('update_eventPrice').value = eventPrice;
         document.getElementById('update_preview').src = eventImage;
 
+        // Preencher os rótulos com os valores existentes
+        document.getElementById('eventNameLabelUpdate').innerText = eventName || 'Inserir nome do evento';
+        document.getElementById('eventLocationLabelUpdate').innerText = eventLocation || '______';
+        document.getElementById('eventCapacityLabelUpdate').innerText = eventCapacity || '______';
+        document.getElementById('eventPriceLabelUpdate').innerText = eventPrice || '______';
+
         document.getElementById('updateForm').action = "/update/" + eventId;
         updateModal.style.display = "block";
       }
@@ -617,9 +664,7 @@
         updateModal.style.display = "none";
       }
     }
-
   </script>
-
 </body>
 
 </html>

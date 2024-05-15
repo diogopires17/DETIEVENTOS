@@ -169,7 +169,7 @@
   color: rgb(255, 255, 255);
 }
 
-#eventDescription {
+#eventDescription, #update_eventDescription {
   height: 10rem;
   width: 60%;
 }
@@ -181,11 +181,11 @@
   justify-content: space-between;
 }
 
-#eventName {
+#eventName, #update_eventName {
   display: none;
 }
 
-.popup_nome_evento {
+.popup_nome_evento, .popup_nome_evento_update {
   font-size: 3rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
@@ -193,13 +193,13 @@
 
 /* Data */
 
-.popup_data {
+.popup_data, .popup_data_update {
   font-size: 1.5rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
 
-.popup_data_input {
+.popup_data_input, .popup_data_input_update {
   background-color: transparent;
   border: none;
   border-bottom: 2px solid rgb(0, 0, 0);
@@ -220,7 +220,7 @@
 
 /* Descrição */
 
-.popup_descricao {
+.popup_descricao, .popup_descricao_update {
   background-color: transparent;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 10px;
@@ -241,25 +241,25 @@
 
 /* Localização */
 
-.popup_localizacao {
+.popup_localizacao, .popup_localizacao_update {
   font-size: 1.2rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
 
-#eventLocation {
+#eventLocation, #update_eventLocation {
   display: none;
 }
 
 /* Preço */
 
-.popup_preco {
+.popup_preco, .popup_preco_update {
   font-size: 1.2rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
 
-#eventPrice {
+#eventPrice, #update_eventPrice {
   display: none;
 }
 
@@ -270,18 +270,18 @@
   color: rgb(0, 0, 0);
 }
 
-#eventVacancies {
+#eventVacancies, #update_eventVacancies {
   display: none;
 }
 
 /* Lotação */
-.popup_capacity {
+.popup_capacity, .popup_capacity_update {
   font-size: 1.2rem !important;
   font-weight: bold !important;
   color: rgb(0, 0, 0) !important;
 }
 
-#eventCapacity {
+#eventCapacity, #update_eventCapacity {
   display: none !important;
 }
 
