@@ -1,4 +1,4 @@
-.modal {
+.modal, .modal_detalhes {
   display: none;
   position: fixed;
   z-index: 1;
@@ -12,7 +12,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.modal-content, .modal-content_detalhes {
   background-color: #f2fff1;
   margin: auto;
   padding: 20px;
@@ -39,6 +39,15 @@
   height: 300px;
   border-radius: 10px;
 }
+
+.pop_up_image_rectangle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  padding: -10px;
+}
+
 
 .pop_up_image_upload {
   background-color: #BDBDBD;
@@ -86,11 +95,12 @@
   color: rgb(255, 255, 255);
 }
 
-.pop_up_add_categoria {
+.pop_up_add_colaborador_detalhes {
   background-color: transparent;
   height: 40px;
   border-radius: 10px;
   margin-top: 25px;
+  padding: 10px;
 
   text-align: center;
   line-height: 40px;
@@ -105,12 +115,61 @@
   align-items: center;
 }
 
+.pop_up_add_colaborador_detalhes:hover {
+  cursor: default;
+  pointer-events: none;
+}
+
+.pop_up_add_categoria_detalhes {
+  background-color: transparent;
+  height: 40px;
+  border-radius: 10px;
+  margin-top: 25px;
+  padding: 10px;
+
+  text-align: center;
+  line-height: 40px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+
+  border: 2px solid rgb(0, 0, 0);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pop_up_add_categoria_detalhes:hover {
+  cursor: default;
+  pointer-events: none;
+}
+
+.pop_up_add_categoria {
+  background-color: transparent;
+  height: 40px;
+  border-radius: 10px;
+  margin-top: 25px;
+
+  text-align: center;
+  line-height: 40px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+
+  border: 2px solid rgb(0, 0, 0);
+
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 .pop_up_add_categoria:hover {
   background-color: #1E9D13;
   color: rgb(255, 255, 255);
 }
 
-#eventDescription {
+#eventDescription, #update_eventDescription {
   height: 10rem;
   width: 60%;
 }
@@ -122,11 +181,11 @@
   justify-content: space-between;
 }
 
-#eventName {
+#eventName, #update_eventName {
   display: none;
 }
 
-.popup_nome_evento {
+.popup_nome_evento, .popup_nome_evento_update {
   font-size: 3rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
@@ -134,15 +193,34 @@
 
 /* Data */
 
-.popup_data {
+.popup_data, .popup_data_update {
   font-size: 1.5rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
 
+.popup_data_input, .popup_data_input_update {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid rgb(0, 0, 0);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+.popup_data_input_detalhes {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #1E9D13;
+  font-size: 1.5rem;
+  font-weight: bold;
+  /* verde */
+  color: #1E9D13;
+}
+
 /* Descrição */
 
-.popup_descricao {
+.popup_descricao, .popup_descricao_update {
   background-color: transparent;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 10px;
@@ -150,35 +228,61 @@
   font-size: 1.3rem;
 }
 
+.popup_descricao_detalhes {
+  background-color: transparent;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.3rem;
+  display: block;
+  width: 60%;
+  height: 50%;
+}
+
 /* Localização */
 
-.popup_localizacao {
+.popup_localizacao, .popup_localizacao_update {
   font-size: 1.2rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
 
-#eventLocation {
+#eventLocation, #update_eventLocation {
   display: none;
 }
 
 /* Preço */
 
-.popup_preco {
+.popup_preco, .popup_preco_update {
   font-size: 1.2rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
 
-#eventPrice {
+#eventPrice, #update_eventPrice {
+  display: none;
+}
+
+/* Vagas */
+.popup_vagas {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+#eventVacancies, #update_eventVacancies {
   display: none;
 }
 
 /* Lotação */
-.popup_locatacao {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: rgb(0, 0, 0);
+.popup_capacity, .popup_capacity_update {
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+#eventCapacity, #update_eventCapacity {
+  display: none !important;
 }
 
 /* Criar evento botão */
@@ -189,6 +293,9 @@
   font-weight: bold;
   border: none;
   border-radius: 10px;
+  margin-right: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .popup_criar_botao:hover {
