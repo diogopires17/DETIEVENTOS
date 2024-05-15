@@ -379,7 +379,7 @@
         <!-- Formulário -->
         <div class="col-md-9">
           <span class="close">&times;</span>
-          <form action="/criar" method="post">
+          <form id="createEventForm" action="/criar" method="post">
             <div class="pop_up_formulario">
               <div>
                 <!-- Nome -->
@@ -389,7 +389,7 @@
               <div style="padding-right: 50px; padding-top: 15px;">
                 <!-- Data -->
                 <span class="popup_data">Data *</span><br>
-                <input class="popup_data_input" type="date" name="eventDate"><br>
+                <input class="popup_data_input" id="eventDate" type="date" name="eventDate"><br>
               </div>
             </div>
 
@@ -706,6 +706,27 @@
       }
     }
   </script>
+
+  <!-- Validação dos campos obrigatorios ao criar um novo evento -->
+  <script>
+    document.getElementById('createEventForm').addEventListener('submit', function (event) {
+      var eventDate = document.getElementById('eventDate').value.trim();
+      var eventLocation = document.getElementById('eventLocation').value.trim();
+      var eventCapacity = document.getElementById('eventCapacity').value.trim();
+      var eventPrice = document.getElementById('eventPrice').value.trim();
+
+      if (!eventDate || !eventLocation || !eventCapacity || !eventPrice) {
+        event.preventDefault(); // Impede o envio do formulário
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Por favor, preencha todos os campos obrigatórios.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  </script>
+
 
 
   <!-- Carrossel -->
