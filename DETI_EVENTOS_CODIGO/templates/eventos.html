@@ -105,7 +105,12 @@
             <div class="event-info">
               <h2 class="event-title">{{event[1]}}</h2>
               <div class="event-details">
-                <p class="event-details-btn">Ver detalhes</p>
+                <p class="event-details-btn" data-event-id="{{ event[0] }}" data-event-title="{{ event[1] }}"
+                  data-event-description="{{ event[2] }}" data-event-organizer="{{ event[3] }}"
+                  data-event-image="{{ event[4] }}" data-event-date="{{ event[5] }}"
+                  data-event-capacity="{{ event[8] }}" data-event-price="{{ event[9] }}"
+                  data-event-vacancies="{{ event[10] }}" data-event-location="{{ event[6] }}"
+                  data-event-collaborator="{{ event[7] }}" data-event-category="{{ event[12] }}">Ver detalhes</p>
               </div>
             </div>
           </div>
@@ -115,79 +120,137 @@
       </div>
     </div>
   </div>
-  <!-- Pop up -->
-  <div id="myModal" class="modal">
+
+
+  <!-- Pop up- ver detalhes -->
+  <div id="myModal_detalhes" class="modal">
     <div class="modal-content">
       <div class="row">
-
         <div class="col-md-3">
           <!-- Retângulo cinza imagem -->
           <div class="pop_up_image_rectangle">
-            <img id="preview" src="" alt="Image preview" />
+            <img id="detail_preview" src="" alt="Image preview" />
           </div>
-          <!-- Botão + para dar upload imagem -->
-          <div class="pop_up_image_upload">
-            <label for="file" class="pop_up_image_upload_label">
-              <input class="pop_up_input_image" type="file" id="file" aria-label="pop_up_input_images"
-                onchange="previewImage()">
-              <i class="fas fa-plus"></i>
-            </label>
+          <!-- Colaborador -->
+          <div class="">
+            <button class="pop_up_add_colaborador_detalhes" id="dropdownMenuButton_colaborador" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Colaborador: <span id="detail_eventCollaborator"></span>
+            </button>
           </div>
+          <!-- Categoria -->
+          <div class="dropdown">
+            <button class="pop_up_add_categoria_detalhes" type="button" id="dropdownMenuButton_categoria"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categoria: Palestra<span id="detail_eventCategory"></span>
+            </button>
+          </div>
+        </div>
+        <!-- Formulário -->
+        <div class="col-md-9">
+          <span id="close_details" class="close">&times;</span>
+          <div class="pop_up_formulario">
+            <!-- Nome -->
+            <div>
+              <span class="popup_nome_evento" id="detail_eventName">Nome do Evento</span><br>
+            </div>
+            <div style="padding-right: 50px; padding-top: 15px;">
+              <!-- Data -->
+              <span class="popup_data" style="margin-right: 90px; margin-top: 20px;">Data</span><br>
+              <span class="popup_data_input_detalhes" id="detail_eventDate"></span><br>
+            </div>
+          </div>
+          <!-- Descrição -->
+          <textarea class="popup_descricao_detalhes" id="detail_eventDescription" readonly></textarea><br>
+          <div class="pop_up_formulario" style="padding-top: 20px;">
+            <!-- Localização -->
+            <div>
+              <span class="popup_localizacao">Localização: *</span><br>
+              <span id="detail_eventLocation"></span><br>
+            </div>
+            <div>
+              <!-- Lotação -->
+              <span class="popup_capacity">Lotação: *</span><br>
+              <span id="detail_eventCapacity"></span><br>
+            </div>
+            <!-- Vagas -->
+            <div>
+              <span class="popup_vagas">Vagas Disponíveis: *</span><br>
+              <span id="detail_eventVacancies"></span><br>
+            </div>
+            <!-- Preço -->
+            <div>
+              <span class="popup_preco">Preço: *</span><br>
+              <span id="detail_eventPrice"></span><br>
+            </div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          <!-- Scripts -->
-          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-          <script>
-            setTimeout(function () {
-              const flashMessage = document.getElementById('flash-message');
-              if (flashMessage) flashMessage.style.display = 'none';
-            }, 2000);
 
-            var modal = document.getElementById("myModal");
-            var btn = document.getElementsByClassName("create-event-button")[0];
-            var span = document.getElementsByClassName("close")[0];
 
-            btn.onclick = function () {
-              modal.style.display = "block";
-            }
 
-            span.onclick = function () {
-              modal.style.display = "none";
-            }
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-            window.onclick = function (event) {
-              if (event.target == modal) {
-                modal.style.display = "none";
-              }
-            }
-          </script>
+  <!-- Pop up -->
+  <script>
+    var detailsModal = document.getElementById("myModal_detalhes");
+    var detailsBtns = document.querySelectorAll(".event-details-btn");
+    var closeDetailsBtn = document.getElementById("close_details");
 
-          <script>
-            window.onload = function () {
-              var isAdmin = {{ is_admin| tojson
-            }};
-            var createEventButton = document.querySelector('.create-event-button');
+    detailsBtns.forEach(function (detailsBtn) {
+      detailsBtn.onclick = function () {
+        var eventId = this.getAttribute('data-event-id');
+        var eventTitle = this.getAttribute('data-event-title');
+        var eventDescription = this.getAttribute('data-event-description');
+        var eventOrganizer = this.getAttribute('data-event-location');
+        var eventImage = this.getAttribute('data-event-image');
+        var eventDate = this.getAttribute('data-event-date');
+        var eventCapacity = this.getAttribute('data-event-price');
+        var eventPrice = this.getAttribute('data-event-vacancies');
+        var eventVacancies = this.getAttribute('data-event-capacity');
+        var eventLocation = this.getAttribute('data-event-organizer');
+        var eventCollaborator = this.getAttribute('data-event-collaborator');
+        var eventCategory = this.getAttribute('data-event-category');
 
-            if (!isAdmin) {
-              createEventButton.style.display = 'none';
-            }
+        // Atualizar o conteúdo do modal com os detalhes do evento
+        document.getElementById('detail_eventName').innerText = eventTitle;
+        document.getElementById('detail_eventDescription').value = eventDescription;
+        document.getElementById('detail_preview').src = eventImage;
+        document.getElementById('detail_eventDate').innerText = eventDate;
+        document.getElementById('detail_eventCapacity').innerText = eventCapacity;
+        document.getElementById('detail_eventPrice').innerText = eventPrice;
+        document.getElementById('detail_eventVacancies').innerText = eventVacancies;
+        document.getElementById('detail_eventLocation').innerText = eventLocation;
+        document.getElementById('detail_eventCollaborator').innerText = eventCollaborator;
+        document.getElementById('detail_eventCategory').innerText = eventCategory;
+
+        detailsModal.style.display = "block";
+      }
+    });
+
+    closeDetailsBtn.onclick = function () {
+      detailsModal.style.display = "none";
     }
-          </script>
 
-          <script>
-            function previewImage() {
-              const preview = document.getElementById('preview');
-              const file = document.querySelector('input[type=file]').files[0];
-              const reader = new FileReader();
+    window.onclick = function (event) {
+      if (event.target == detailsModal) {
+        detailsModal.style.display = "none";
+      }
+    }
+  </script>
 
-              reader.addEventListener("load", function () {
-                // convert image file to base64 string
-                preview.src = reader.result;
-              }, false);
 
-              if (file) {
-                reader.readAsDataURL(file);
-              }
-            }
-          </script>
+</body>
+
+</html>
