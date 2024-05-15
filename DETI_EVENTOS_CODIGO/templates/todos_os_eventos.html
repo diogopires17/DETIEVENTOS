@@ -7,10 +7,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/navbar_style.css">
-  <link rel="stylesheet" href="/static/css/todos_eventos.css">
+  <link rel="stylesheet" href="/static/css/style.css">
   <link rel="stylesheet" href="/static/css/pop_up.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="icon" href="/static/images/logo_icon.svg">
+
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
   <title>Todos os Eventos</title>
 </head>
@@ -18,11 +21,21 @@
 <body>
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-  {% for category, message in messages %}
-  <div id="flash-message" class="alert alert-{{ category }} flash-error">
-    {{ message }}
-  </div>
-  {% endfor %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      {% for category, message in messages %}
+      Swal.fire({
+        icon: '{{ category }}',
+        title: '{{ category }}',
+        text: '{{ message }}',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'custom-ok-button'
+        }
+      });
+      {% endfor %}
+    });
+  </script>
   {% endif %}
   {% endwith %}
 
@@ -50,64 +63,240 @@
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"
             aria-label="Botao_Pesquisar"></i></button>
       </form>
-     
-        {% if not user%}
-        <a class="nav-link ml-2 navbar_style_login" href="/login">
+
+      {% if not user%}
+      <a class="nav-link ml-2 navbar_style_login" href="/login">
         <img class="login-icon" src="static/images/user_icon.svg" alt="User Icon">
         Login
         {% endif %}
         {% if user %}
         <a class="nav-link ml-2 navbar_style_login" href="/meus_eventos">
-        <img class="login-icon" src="static/images/user_icon.svg" alt="User Icon">
-        {{ name }}
-        {% endif %}
+          <img class="login-icon" src="static/images/user_icon.svg" alt="User Icon">
+          {{ name }}
+          {% endif %}
 
-      </a>
+        </a>
 
-      <a class="nav-link ml-2 navbar_style_login" href="/logout">
-        Logout
-      </a>
+        <a class="nav-link ml-2 navbar_style_login" href="/logout">
+          Logout
+        </a>
     </div>
   </nav>
 
- <!-- Proximos Eventos -->
- <div class="events-header">
-  <h1>Todos os Eventos</h1>
-  {% if is_admin %}
-  <button class="create-event-button">Criar Evento</button>
-  {% endif %}
-</div>
-<div class="event-card-container">
-  {% for event in events %}
-  <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover;">
+  <!-- Todos os Eventos -->
+  <div class="events-header">
+    <h1>Todos os Eventos</h1>
     {% if is_admin %}
-    <button class="edit-event-button" onclick="window.location.href='/update/{{ event[0] }}'">
-      <i class="fas fa-pencil-alt"></i>
-    </button>
+    <button class="create-event-button">Criar Evento</button>
     {% endif %}
-    <div class="event-content">
-      <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
-      <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
-    </div>
-    <div class="event-info">
-      <h2 class="event-title">{{event[1]}}</h2>
-      <div class="event-details">
-        <p class="event-details-btn">Ver detalhes</p>
-        {% if event[11]%}
-        <p class="event-status-btn"> Sem vagas!</p>
-        {% endif %}
-        {% if not event[11]%}
-        <p class="event-status-btn-verde"> Com vagas!</p>
+  </div>
+  <div class="event-card-container">
+    {% for event in events %}
+    <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover; margin: 20px;">
+      {% if is_admin %}
+      <button class="edit-event-button" data-event-id="{{ event[0] }}" data-event-name="{{ event[1] }}"
+        data-event-location="{{ event[6] }}" data-event-capacity="{{ event[8] }}" data-event-date="{{ event[5] }}"
+        data-event-description="{{ event[2] }}" data-event-image="{{ event[4] }}" data-event-price="{{ event[9] }}">
+        <i class="fas fa-pencil-alt"></i>
+      </button>
+
+      {% endif %}
+      <div class="event-content">
+        <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
+        <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
+      </div>
+      <div class="event-info">
+        <h2 class="event-title">{{event[1]}}</h2>
+        <div class="event-details">
+          <p class="event-details-btn" id="details-btn" data-event-id="{{ event[0] }}" data-event-title="{{ event[1] }}"
+            data-event-description="{{ event[2] }}" data-event-organizer="{{ event[3] }}"
+            data-event-image="{{ event[4] }}" data-event-date="{{ event[5] }}" data-event-capacity="{{ event[8] }}"
+            data-event-price="{{ event[9] }}" data-event-vacancies="{{ event[10] }}"
+            data-event-location="{{ event[6] }}" data-event-collaborator="{{ event[7] }}"
+            data-event-category="{{ event[12] }}">Ver detalhes</p>
+          {% if event[11]%}
+          <p class="event-status-btn"> Sem vagas!</p>
+          {% endif %}
+          {% if not event[11]%}
+          <p class="event-status-btn-verde"> Com vagas!</p>
+          {% endif %}
+        </div>
+        {% if not is_admin %}
+        <form method="POST" action="/inscrever/{{ event[0] }}">
+          {% if user_events and user_events[1][0] == user_id and event[0] == user_events[1][1] %}
+          <button type="submit" class="desinscrever-button"> Desinscrever</button>
+          {% else %}
+          <button type="submit" class="inscrever-button">Inscrever</button>
+          {% endif %}
+        </form>
         {% endif %}
       </div>
-      {% if not is_admin %}
-      <form method="POST" action="/inscrever/{{ event[0] }}">
-          <button type="submit" class="inscrever-button">Inscrever</button>
-      </form>
-      {% endif %}
+    </div>
+    {% endfor %}
+
+
+
+  </div>
+
+  <!-- Pop Up - Atualizar Evento -->
+  <div id="myModal_update" class="modal">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="pop_up_image_rectangle">
+            <img id="update_preview" src="" alt="Image preview" />
+          </div>
+        </div>
+        <div class="col-md-9">
+          <span id="close_update" class="close">&times;</span>
+          <form id="updateForm" action="/update/{{ event_id }}" method="post">
+            <!-- Formulário do update -->
+            <div class="pop_up_formulario">
+              <div>
+                <!-- Nome -->
+                <span class="popup_nome_evento_update" id="eventNameLabelUpdate">Inserir nome do evento</span><br>
+                <input type="text" id="update_eventName" name="eventName" value="{{ eventName }}"><br>
+              </div>
+              <div style="padding-right: 50px; padding-top: 15px;">
+                <!-- Data -->
+                <span for="eventDate" class="popup_data_update">Data *</span><br>
+                <input class="popup_data_input_update" type="date" id="update_eventDate" name="eventDate"
+                  value="{{ eventDate }}"><br>
+              </div>
+            </div>
+            <!-- Descrição -->
+            <textarea class="popup_descricao_update" placeholder="Descrição do evento" id="update_eventDescription"
+              name="eventDescription">{{ eventDescription }}</textarea><br>
+            <div class="pop_up_formulario" style="padding-top: 20px;">
+              <div>
+                <!-- Local -->
+                <span class="popup_localizacao_update">Localização: *</span><br>
+                <span class="popup_localizacao_update" id="eventLocationLabelUpdate">______</span><br>
+                <input type="text" id="update_eventLocation" name="eventLocation" value="{{ eventLocation }}"><br>
+              </div>
+              <div>
+                <!-- Lotação -->
+                <span class="popup_capacity_update">Lotação: *</span><br>
+                <span class="popup_capacity_update" id="eventCapacityLabelUpdate">______</span><br>
+                <input type="number" min="0" id="update_eventCapacity" name="eventCapacity"
+                  value="{{ eventCapacity }}"><br>
+              </div>
+              <div>
+                <!-- Preço -->
+                <span class="popup_preco_update">Preço: *</span><br>
+                <span class="popup_preco_update" id="eventPriceLabelUpdate">______</span><br>
+                <input type="number" min="0" id="update_eventPrice" name="eventPrice" value="{{ eventPrice }}"><br>
+              </div>
+              <div></div>
+              <!-- Botão Atualizar Evento -->
+              <input class="popup_criar_botao" type="submit" value="Atualizar Evento">
+            </div>
+            <div>
+              <!-- * Campos Obrigatórios -->
+              <span>* Campos Obrigatórios</span>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-  {% endfor %}
+
+
+
+  <!-- Pop up- ver detalhes -->
+  <div id="myModal_detalhes" class="modal">
+    <div class="modal-content">
+      <div class="row">
+
+        <div class="col-md-3">
+          <!-- Retângulo cinza imagem -->
+          <div class="pop_up_image_rectangle">
+            <img id="detail_preview" src="" alt="Image preview" />
+          </div>
+
+          <!-- Colaborador -->
+          <div class="">
+            <button class="pop_up_add_colaborador_detalhes" id="dropdownMenuButton_colaborador" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Colaborador: <span id="detail_eventCollaborator"></span>
+            </button>
+          </div>
+
+          <!-- Categoria -->
+          <div class="dropdown">
+            <button class="pop_up_add_categoria_detalhes" type="button" id="dropdownMenuButton_categoria"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categoria: Workshop<span id="detail_eventCategory"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="col-md-9">
+          <span id="close_details" class="close">&times;</span>
+          <div class="pop_up_formulario">
+            <!-- Nome -->
+            <div>
+              <span class="popup_nome_evento" id="detail_eventName">Nome do Evento</span><br>
+            </div>
+            <div style="padding-right: 50px; padding-top: 15px;">
+              <!-- Data -->
+              <span class="popup_data" style="margin-right: 90px; margin-top: 20px;">Data</span><br>
+              <span class="popup_data_input_detalhes" id="detail_eventDate"></span><br>
+            </div>
+          </div>
+
+          <!-- Descrição -->
+          <textarea class="popup_descricao_detalhes" id="detail_eventDescription" readonly></textarea><br>
+
+          <div class="pop_up_formulario" style="padding-top: 20px;">
+            <!-- Localização -->
+            <div>
+              <span class="popup_localizacao">Localização: *</span><br>
+              <span id="detail_eventLocation"></span><br>
+            </div>
+
+            <div>
+              <!-- Lotação -->
+              <span class="popup_capacity">Lotação: *</span><br>
+              <span id="detail_eventCapacity"></span><br>
+            </div>
+
+            <!-- Vagas -->
+            <div>
+              <span class="popup_vagas">Vagas Disponíveis: *</span><br>
+              <span id="detail_eventVacancies"></span><br>
+            </div>
+
+            <!-- Preço -->
+            <div>
+              <span class="popup_preco">Preço: *</span><br>
+              <span id="detail_eventPrice"></span><br>
+            </div>
+
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <!-- Organizador -->
+            <!-- <div>
+              <span class="popup_organizador">Organizador: *</span><br>
+              <span id="detail_eventOrganizer"></span><br>
+            </div> -->
+
+          </div>
+
+          <div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
   <!-- Pop up -->
@@ -123,7 +312,8 @@
           <!-- Botão + para dar upload imagem -->
           <div class="pop_up_image_upload">
             <label for="file" class="pop_up_image_upload_label">
-              <input class="pop_up_input_image" type="file" id="file" aria-label="pop_up_input_images" onchange="previewImage()">
+              <input class="pop_up_input_image" type="file" id="file" aria-label="pop_up_input_images"
+                onchange="previewImage()">
               <i class="fas fa-plus"></i>
             </label>
           </div>
@@ -131,42 +321,97 @@
           <!-- Botão Adicionar Colaborador -->
           <div class="dropdown">
             <button class="dropdown btn btn-secondary dropdown-toggle pop_up_add_colaborador" type="button"
-              id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              id="dropdownMenuButton_colaborador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Adicionar Colaborador
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">NEI</a>
-              <a class="dropdown-item" href="#">NEECT</a>
-              <a class="dropdown-item" href="#">AETTUA</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_colaborador">
+              <a class="dropdown-item colaborador-item" href="#">NEI</a>
+              <a class="dropdown-item colaborador-item" href="#">NEECT</a>
+              <a class="dropdown-item colaborador-item" href="#">AETTUA</a>
             </div>
           </div>
-        </div>  
-        
+
+          <!-- Botão Adicionar Categoria -->
+          <div class="dropdown">
+            <button class="dropdown btn btn-secondary dropdown-toggle pop_up_add_categoria" type="button"
+              id="dropdownMenuButton_categoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Adicionar Categoria
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_categoria">
+              <a class="dropdown-item categoria-item" href="#">Workshop</a>
+              <a class="dropdown-item categoria-item" href="#">Palestra</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Formulário -->
         <div class="col-md-9">
           <span class="close">&times;</span>
           <form action="/criar" method="post">
-            <h2>Novo evento</h2>
-            <label for="eventName">Nome do evento:</label><br>
-            <input type="text" id="eventName" name="eventName"><br>
-            <label for="eventLocation">Local do evento:</label><br>
-            <input type="text" id="eventLocation" name="eventLocation"><br>
-            <label for="eventTime">Vagas</label><br>
-            <input type="number" min = "0"  id="eventCapacity" name="eventCapacity"><br>
-            <label for="eventDate">Data:</label><br>
-            <input type="date" id="eventDate" name="eventDate"><br>
-            <label for="eventDescription">Descrição do evento:</label><br>
-            <textarea id="eventDescription" name="eventDescription"></textarea><br>
-            <label for="eventPrice">Preço:</label><br>
-            <input type="number" min= "0" id="eventPrice" name="eventPrice"><br>
-            <input type="submit"  value="Criar Evento">
+            <div class="pop_up_formulario">
+              <div>
+                <!-- Nome -->
+                <span class="popup_nome_evento" id="eventNameLabel">Inserir nome do evento</span><br>
+                <input type="text" id="eventName" name="eventName"><br>
+              </div>
+              <div style="padding-right: 50px; padding-top: 15px;">
+                <!-- Data -->
+                <span class="popup_data">Data *</span><br>
+                <input class="popup_data_input" type="date" name="eventDate"><br>
+              </div>
+            </div>
+
+            <!-- Descrição -->
+            <textarea class="popup_descricao" id="eventDescription" name="eventDescription"
+              placeholder="Descrição do evento"></textarea><br>
+
+            <div class="pop_up_formulario" style="padding-top: 20px;">
+              <!-- Localização -->
+              <div>
+                <span class="popup_localizacao">Localização: *</span><br>
+                <span class="popup_localizacao" id="eventLocationLabel">______</span><br>
+                <input type="text" id="eventLocation" name="eventLocation"><br>
+              </div>
+
+              <div>
+                <!-- Lotação -->
+                <span class="popup_capacity">Lotação: *</span><br>
+                <span class="popup_capacity" id="eventCapacityLabel">______</span><br>
+                <input type="number" min="0" id="eventCapacity" name="eventCapacity"><br>
+              </div>
+
+              <!-- Preço -->
+              <div>
+                <span class="popup_preco">Preço: *</span><br>
+                <span class="popup_preco" id="eventPriceLabel">______</span><br>
+                <input type="number" min="0" id="eventPrice" name="eventPrice"><br>
+              </div>
+
+              <div>
+              </div>
+
           </form>
+
+          <!-- Botão Criar Evento -->
+          <input class="popup_criar_botao" type="submit" value="Criar Evento">
         </div>
+
+        <div>
+          <!-- * Campos Obrigatórios -->
+          <span>* Campos Obrigatórios</span>
+        </div>
+
+
       </div>
     </div>
   </div>
 
 
   <!-- Scripts -->
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -178,50 +423,258 @@
 
     var modal = document.getElementById("myModal");
     var btn = document.getElementsByClassName("create-event-button")[0];
-    var span = document.getElementsByClassName("close")[0];
+    var span = modal.getElementsByClassName("close")[0];
 
-    btn.onclick = function () {
-      modal.style.display = "block";
+    if (btn && span) { // Adicionando verificação de existência
+      btn.onclick = function () {
+        modal.style.display = "block";
+      }
+
+      span.onclick = function () {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
+  </script>
+  <script>
+    function previewImage() {
+      const preview = document.getElementById('preview');
+      const file = document.querySelector('input[type=file]').files[0];
+      const reader = new FileReader();
+
+      reader.addEventListener("load", function () {
+        // convert image file to base64 string
+        preview.src = reader.result;
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+  <script>
+    function initializeCreateEventPopup() {
+      var locationLabel = document.getElementById('eventLocationLabel');
+      var locationInput = document.getElementById('eventLocation');
+      var priceLabel = document.getElementById('eventPriceLabel');
+      var priceInput = document.getElementById('eventPrice');
+      var nameLabel = document.getElementById('eventNameLabel');
+      var nameInput = document.getElementById('eventName');
+      var capacityLabel = document.getElementById('eventCapacityLabel');
+      var capacityInput = document.getElementById('eventCapacity');
+
+      function setupLabelAndInput(label, input, initialText) {
+        label.contentEditable = true;
+        label.addEventListener('focus', function () {
+          if (this.innerText === initialText) {
+            this.innerText = '';
+          }
+        });
+        label.addEventListener('input', function () {
+          input.value = this.innerText;
+        });
+        label.addEventListener('keydown', function (e) {
+          if (e.keyCode === 13) {
+            e.preventDefault();
+            this.blur();
+            this.contentEditable = false;
+          }
+        });
+        label.addEventListener('mousedown', function () {
+          this.contentEditable = true;
+        });
+        label.addEventListener('blur', function () {
+          if (this.innerText.trim() === '') {
+            this.innerText = initialText;
+          }
+        });
+      }
+
+      setupLabelAndInput(locationLabel, locationInput, '______');
+      setupLabelAndInput(priceLabel, priceInput, '______');
+      setupLabelAndInput(nameLabel, nameInput, 'Inserir nome do evento');
+      setupLabelAndInput(capacityLabel, capacityInput, '______');
     }
 
-    span.onclick = function () {
-      modal.style.display = "none";
+    function initializeUpdateEventPopup() {
+      var locationLabelUpdate = document.getElementById('eventLocationLabelUpdate');
+      var locationInputUpdate = document.getElementById('update_eventLocation');
+      var priceLabelUpdate = document.getElementById('eventPriceLabelUpdate');
+      var priceInputUpdate = document.getElementById('update_eventPrice');
+      var nameLabelUpdate = document.getElementById('eventNameLabelUpdate');
+      var nameInputUpdate = document.getElementById('update_eventName');
+      var capacityLabelUpdate = document.getElementById('eventCapacityLabelUpdate');
+      var capacityInputUpdate = document.getElementById('update_eventCapacity');
+
+      function setupLabelAndInput(label, input, initialText) {
+        label.contentEditable = true;
+        label.addEventListener('focus', function () {
+          if (this.innerText === initialText) {
+            this.innerText = '';
+          }
+        });
+        label.addEventListener('input', function () {
+          input.value = this.innerText;
+        });
+        label.addEventListener('keydown', function (e) {
+          if (e.keyCode === 13) {
+            e.preventDefault();
+            this.blur();
+            this.contentEditable = false;
+          }
+        });
+        label.addEventListener('mousedown', function () {
+          this.contentEditable = true;
+        });
+        label.addEventListener('blur', function () {
+          if (this.innerText.trim() === '') {
+            this.innerText = initialText;
+          }
+        });
+      }
+
+      setupLabelAndInput(locationLabelUpdate, locationInputUpdate, '______');
+      setupLabelAndInput(priceLabelUpdate, priceInputUpdate, '______');
+      setupLabelAndInput(nameLabelUpdate, nameInputUpdate, 'Inserir nome do evento');
+      setupLabelAndInput(capacityLabelUpdate, capacityInputUpdate, '______');
+    }
+
+    window.onload = function () {
+      initializeCreateEventPopup();
+      initializeUpdateEventPopup();
+
+      var isAdmin = {{ is_admin | tojson
+    }};
+    var createEventButton = document.querySelector('.create-event-button');
+
+    if (!isAdmin) {
+      createEventButton.style.display = 'none';
+    }
+    }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var dropdownItems = document.querySelectorAll('.colaborador-item');
+      var dropdownButton = document.querySelector('.pop_up_add_colaborador');
+
+      dropdownItems.forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          dropdownButton.textContent = 'Colaborador: ' + this.textContent;
+        });
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var dropdownItems = document.querySelectorAll('.categoria-item');
+      var dropdownButton = document.querySelector('.pop_up_add_categoria');
+
+      dropdownItems.forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          dropdownButton.textContent = 'Categoria: ' + this.textContent;
+        });
+      });
+    });
+  </script>
+  <script>
+    var detailsModal = document.getElementById("myModal_detalhes");
+    var detailsBtns = document.querySelectorAll(".event-details-btn");
+    var closeDetailsBtn = document.getElementById("close_details");
+
+    detailsBtns.forEach(function (detailsBtn) {
+      detailsBtn.onclick = function () {
+        var eventId = this.getAttribute('data-event-id');
+        var eventTitle = this.getAttribute('data-event-title');
+        var eventDescription = this.getAttribute('data-event-description');
+        var eventOrganizer = this.getAttribute('data-event-location'); // Trocado
+        var eventImage = this.getAttribute('data-event-image');
+        var eventDate = this.getAttribute('data-event-date');
+        var eventCapacity = this.getAttribute('data-event-price'); // Trocado
+        var eventPrice = this.getAttribute('data-event-vacancies');
+        var eventVacancies = this.getAttribute('data-event-capacity'); // Trocado
+        var eventLocation = this.getAttribute('data-event-organizer'); // Trocado
+        var eventCollaborator = this.getAttribute('data-event-collaborator');
+        var eventCategory = this.getAttribute('data-event-category');
+
+        // Atualizar o conteúdo do modal com os detalhes do evento
+        document.getElementById('detail_eventName').innerText = eventTitle;
+        document.getElementById('detail_eventDescription').value = eventDescription;
+        // document.getElementById('detail_eventOrganizer').innerText = eventOrganizer;
+        document.getElementById('detail_preview').src = eventImage;
+        document.getElementById('detail_eventDate').innerText = eventDate;
+        document.getElementById('detail_eventCapacity').innerText = eventCapacity;
+        document.getElementById('detail_eventPrice').innerText = eventPrice;
+        document.getElementById('detail_eventVacancies').innerText = eventVacancies;
+        document.getElementById('detail_eventLocation').innerText = eventLocation;
+        document.getElementById('detail_eventCollaborator').innerText = eventCollaborator;
+        document.getElementById('detail_eventCategory').innerText = eventCategory;
+
+        detailsModal.style.display = "block";
+      }
+    });
+
+    closeDetailsBtn.onclick = function () {
+      detailsModal.style.display = "none";
     }
 
     window.onclick = function (event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
+      if (event.target == detailsModal) {
+        detailsModal.style.display = "none";
       }
     }
   </script>
-
   <script>
-    window.onload = function() {
-      var isAdmin = {{ is_admin|tojson }};
-      var createEventButton = document.querySelector('.create-event-button');
-      
-      if (!isAdmin) {
-        createEventButton.style.display = 'none';
+    var updateModal = document.getElementById("myModal_update");
+    var updateBtns = document.querySelectorAll(".edit-event-button");
+    var closeUpdateBtn = document.getElementById("close_update");
+
+    updateBtns.forEach(function (updateBtn) {
+      updateBtn.onclick = function () {
+        var eventId = this.getAttribute('data-event-id');
+        var eventName = this.getAttribute('data-event-name');
+        var eventLocation = this.getAttribute('data-event-location');
+        var eventCapacity = this.getAttribute('data-event-capacity');
+        var eventDate = this.getAttribute('data-event-date');
+        var eventDescription = this.getAttribute('data-event-description');
+        var eventImage = this.getAttribute('data-event-image');
+        var eventPrice = this.getAttribute('data-event-price');
+
+        document.getElementById('update_eventName').value = eventName;
+        document.getElementById('update_eventLocation').value = eventLocation;
+        document.getElementById('update_eventCapacity').value = eventCapacity;
+        document.getElementById('update_eventDate').value = eventDate;
+        document.getElementById('update_eventDescription').value = eventDescription;
+        document.getElementById('update_eventPrice').value = eventPrice;
+        document.getElementById('update_preview').src = eventImage;
+
+        // Preencher os rótulos com os valores existentes
+        document.getElementById('eventNameLabelUpdate').innerText = eventName || 'Inserir nome do evento';
+        document.getElementById('eventLocationLabelUpdate').innerText = eventLocation || '______';
+        document.getElementById('eventCapacityLabelUpdate').innerText = eventCapacity || '______';
+        document.getElementById('eventPriceLabelUpdate').innerText = eventPrice || '______';
+
+        document.getElementById('updateForm').action = "/update/" + eventId;
+        updateModal.style.display = "block";
+      }
+    });
+
+    closeUpdateBtn.onclick = function () {
+      updateModal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == updateModal) {
+        updateModal.style.display = "none";
       }
     }
   </script>
-  
-<script>
-  function previewImage() {
-    const preview = document.getElementById('preview');
-    const file = document.querySelector('input[type=file]').files[0];
-    const reader = new FileReader();
-  
-    reader.addEventListener("load", function () {
-      // convert image file to base64 string
-      preview.src = reader.result;
-    }, false);
-  
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  }
-</script>
 </body>
 
 </html>

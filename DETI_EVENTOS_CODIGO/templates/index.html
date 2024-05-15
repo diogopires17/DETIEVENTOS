@@ -12,17 +12,30 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="icon" href="/static/images/logo_icon.svg">
 
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
   <title>DETI Eventos - Início</title>
 </head>
 
 <body>
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-  {% for category, message in messages %}
-  <div id="flash-message" class="alert alert-{{ category }} flash-error">
-    {{ message }}
-  </div>
-  {% endfor %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      {% for category, message in messages %}
+      Swal.fire({
+        icon: '{{ category }}',
+        title: '{{ category }}',
+        text: '{{ message }}',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'custom-ok-button'
+        }
+      });
+      {% endfor %}
+    });
+  </script>
   {% endif %}
   {% endwith %}
 
@@ -77,49 +90,77 @@
     <button class="create-event-button">Criar Evento</button>
     {% endif %}
   </div>
-  <div class="event-card-container">
-    {% for event in events %}
-    <div class="event-card" style="background-image: url('{{event[4]}}'); background-size: cover; margin: 20px;">
-      {% if is_admin %}
-      <button class="edit-event-button" data-event-id="{{ event[0] }}" data-event-name="{{ event[1] }}"
-        data-event-location="{{ event[6] }}" data-event-capacity="{{ event[8] }}" data-event-date="{{ event[5] }}"
-        data-event-description="{{ event[2] }}" data-event-image="{{ event[4] }}" data-event-price="{{ event[9] }}">
-        <i class="fas fa-pencil-alt"></i>
-      </button>
 
-      {% endif %}
-      <div class="event-content">
-        <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
-        <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
-      </div>
-      <div class="event-info">
-        <h2 class="event-title">{{event[1]}}</h2>
-        <div class="event-details">
-          <p class="event-details-btn" id="details-btn" data-event-id="{{ event[0] }}" data-event-title="{{ event[1] }}"
-            data-event-description="{{ event[2] }}" data-event-organizer="{{ event[3] }}"
-            data-event-image="{{ event[4] }}" data-event-date="{{ event[5] }}" data-event-capacity="{{ event[8] }}"
-            data-event-price="{{ event[9] }}" data-event-vacancies="{{ event[10] }}"
-            data-event-location="{{ event[6] }}" data-event-collaborator="{{ event[7] }}"
-            data-event-category="{{ event[12] }}">Ver detalhes</p>
-          {% if event[11]%}
-          <p class="event-status-btn"> Sem vagas!</p>
+  <div id="eventCarousel" class="carousel slide">
+    <div class="carousel-inner">
+      {% for event in events %}
+      {% if loop.index0 % 4 == 0 %}
+      <div class="carousel-item {% if loop.first %}active{% endif %}">
+        <div class="row">
           {% endif %}
-          {% if not event[11]%}
-          <p class="event-status-btn-verde"> Com vagas!</p>
-          {% endif %}
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="event-card"
+              style="background-image: url('{{event[4]}}'); background-size: cover; margin: 20px;">
+              {% if is_admin %}
+              <button class="edit-event-button" data-event-id="{{ event[0] }}" data-event-name="{{ event[1] }}"
+                data-event-location="{{ event[6] }}" data-event-capacity="{{ event[8] }}"
+                data-event-date="{{ event[5] }}" data-event-description="{{ event[2] }}"
+                data-event-image="{{ event[4] }}" data-event-price="{{ event[9] }}">
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+              {% endif %}
+              <div class="event-content">
+                <div class="event-day">{{ event[5]|formatdate('%d') }}</div>
+                <div class="event-month">{{ event[5]|formatdate('%B') }}</div>
+              </div>
+              <div class="event-info">
+                <h2 class="event-title">{{event[1]}}</h2>
+                <div class="event-details">
+                  <p class="event-details-btn" id="details-btn" data-event-id="{{ event[0] }}"
+                    data-event-title="{{ event[1] }}" data-event-description="{{ event[2] }}"
+                    data-event-organizer="{{ event[3] }}" data-event-image="{{ event[4] }}"
+                    data-event-date="{{ event[5] }}" data-event-capacity="{{ event[8] }}"
+                    data-event-price="{{ event[9] }}" data-event-vacancies="{{ event[10] }}"
+                    data-event-location="{{ event[6] }}" data-event-collaborator="{{ event[7] }}"
+                    data-event-category="{{ event[12] }}">Ver detalhes</p>
+                  {% if event[11]%}
+                  <p class="event-status-btn"> Sem vagas!</p>
+                  {% endif %}
+                  {% if not event[11]%}
+                  <p class="event-status-btn-verde"> Com vagas!</p>
+                  {% endif %}
+                </div>
+
+
+                {% if not is_admin %}
+                <form method="POST" action="/inscrever/{{ event[0] }}">
+                  {% if user_events[1][0] == user_id and event[0] == user_events[1][1] %}
+                  <button type="submit" class="desinscrever-button"> Desinscrever</button>
+                  {% else %}
+                  <button type="submit" class="inscrever-button">Inscrever</button>
+                  {% endif %}
+                </form>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% if loop.index0 % 4 == 3 or loop.last %}
         </div>
-        {% if not is_admin %}
-        <form method="POST" action="/inscrever/{{ event[0] }}">
-          {% if user_events[1][0] == user_id and event[0] == user_events[1][1] %}
-          <button type="submit" class="desinscrever-button"> Desinscrever</button>
-          {% else %}
-          <button type="submit" class="inscrever-button">Inscrever</button>
-          {% endif %}
-        </form>
-        {% endif %}
       </div>
+      {% endif %}
+      {% endfor %}
     </div>
-    {% endfor %}
+    <a class="carousel-control-prev" href="#eventCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="carousel-control-next" href="#eventCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Próximo</span>
+    </a>
+  </div>
+
+
 
 
 
@@ -338,7 +379,7 @@
         <!-- Formulário -->
         <div class="col-md-9">
           <span class="close">&times;</span>
-          <form action="/criar" method="post">
+          <form id="createEventForm" action="/criar" method="post">
             <div class="pop_up_formulario">
               <div>
                 <!-- Nome -->
@@ -348,7 +389,7 @@
               <div style="padding-right: 50px; padding-top: 15px;">
                 <!-- Data -->
                 <span class="popup_data">Data *</span><br>
-                <input class="popup_data_input" type="date" name="eventDate"><br>
+                <input class="popup_data_input" id="eventDate" type="date" name="eventDate"><br>
               </div>
             </div>
 
@@ -399,6 +440,9 @@
 
 
   <!-- Scripts -->
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -662,6 +706,38 @@
       }
     }
   </script>
+
+  <!-- Validação dos campos obrigatorios ao criar um novo evento -->
+  <script>
+    document.getElementById('createEventForm').addEventListener('submit', function (event) {
+      var eventDate = document.getElementById('eventDate').value.trim();
+      var eventLocation = document.getElementById('eventLocation').value.trim();
+      var eventCapacity = document.getElementById('eventCapacity').value.trim();
+      var eventPrice = document.getElementById('eventPrice').value.trim();
+
+      if (!eventDate || !eventLocation || !eventCapacity || !eventPrice) {
+        event.preventDefault(); // Impede o envio do formulário
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Por favor, preencha todos os campos obrigatórios.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  </script>
+
+
+
+  <!-- Carrossel -->
+  <script>
+    // Ativar o carrossel manualmente
+    $('#eventCarousel').carousel({
+      interval: false // Define a troca automática de slides como falsa
+    });
+  </script>
+
+
 </body>
 
 </html>
