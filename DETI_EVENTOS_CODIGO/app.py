@@ -148,7 +148,8 @@ def criar():
 def meus_eventos():
     # Fetch events associated with user 2
     events = get_user_associated_events(2)
-    
+    user_id = get_user_id(session.get('user_email'))
+
     converted_events = []
     for event in events:
         converted_event = list(event)
@@ -159,8 +160,11 @@ def meus_eventos():
     
     user = 'user_email' in session
     name = session.get('user_name')
-    
-    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=2, name=name, user=user)
+    user_events = get_user_events(user_id)
+    user_events = list(user_events)
+    event = get_events()
+
+    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=2, name=name, user=user, user_events=user_events, event=event)
 
 
 @app.route('/perfil')
@@ -288,6 +292,32 @@ def inscrever(event_id):
     except sqlite3.Error as e:
         print("Error inserting user event:", e)
         flash('An error occurred while registering for the event', category='error')
+        return redirect('/')
+    finally:
+        if connection:
+            connection.close()
+
+
+@app.route('/desinscrever/<int:event_id>', methods=['POST'])
+def desinscrever(event_id):
+    if 'user_email' not in session:
+        flash("You must be logged in to access this page", category='error')
+        return redirect('/login')
+
+    user_email = session.get('user_email')
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
+    cursor.execute("SELECT id FROM users WHERE email = ?", (user_email,))
+    user_id = cursor.fetchone()[0]
+
+    try:
+        cursor.execute("DELETE FROM user_events WHERE user_id = ? AND event_id = ?", (user_id, event_id)) 
+        connection.commit()
+        flash('Desinscrição realizada com sucesso', category='success')
+        return redirect('/')
+    except sqlite3.Error as e:
+        print("Error unsubscribing user from event:", e)
+        flash('An error occurred while unsubscribing from the event', category='error')
         return redirect('/')
     finally:
         if connection:

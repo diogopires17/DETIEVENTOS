@@ -133,11 +133,14 @@
 
 
                 {% if not is_admin %}
+                {% if user_events[1][0] == user_id and event[0] == user_events[1][1] %}
+                <form method="POST" action="/desinscrever/{{ event[0] }}">
+                  <button type="submit" class="desinscrever-button">Desinscrever</button>
+                </form>
+                {% else %}
                 <form method="POST" action="/inscrever/{{ event[0] }}">
-                  {% if user_events[1][0] == user_id and event[0] == user_events[1][1] %}
-                  <button type="submit" class="desinscrever-button"> Desinscrever</button>
-                  {% else %}
                   <button type="submit" class="inscrever-button">Inscrever</button>
+                </form>
                   {% endif %}
                 </form>
                 {% endif %}
@@ -305,6 +308,9 @@
               <span id="detail_eventPrice"></span><br>
             </div>
 
+              <form method="POST" action="/desinscrever}">
+                <button type="submit" class="desinscrever-button">Desinscrever</button>
+              </form>
             <div></div>
             <div></div>
             <div></div>
