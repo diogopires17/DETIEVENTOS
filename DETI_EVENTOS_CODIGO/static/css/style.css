@@ -164,6 +164,7 @@ h2 {
     overflow: hidden;
     margin-right: 20px;
     background: #fff;
+    margin: 20px;
 }
 
 .event-card::before {
