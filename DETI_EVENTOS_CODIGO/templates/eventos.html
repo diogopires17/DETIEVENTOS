@@ -112,6 +112,13 @@
                   data-event-vacancies="{{ event[10] }}" data-event-location="{{ event[6] }}"
                   data-event-collaborator="{{ event[7] }}" data-event-category="{{ event[12] }}">Ver detalhes</p>
               </div>
+
+              {% if not is_admin %}
+              <form method="POST" action="/inscrever/{{ event[0] }}">
+                <button type="submit" class="desinscrever-button">Desinscrever</button>
+              </form>
+              {% endif %}
+
             </div>
           </div>
           {% endif %}

@@ -117,6 +117,8 @@
                   <p class="event-status-btn-verde"> Com vagas!</p>
                   {% endif %}
                 </div>
+
+
                 {% if not is_admin %}
                 <form method="POST" action="/inscrever/{{ event[0] }}">
                   {% if user_events[1][0] == user_id and event[0] == user_events[1][1] %}
