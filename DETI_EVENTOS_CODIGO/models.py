@@ -37,8 +37,8 @@ def init_db():
     cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 2, 'NEECT', 10, 15, 10, 0 )""")    
     cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-05-07', 2, 'NEI', 30,30, 3, 1)""")   
     cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-15', 1, 'NEET', 10, 12, 5, 0 )""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', 'C Workshop', 'DETI', 'static/img/python.png', '2024-08-09', 2, 'NEECT', 10, 15, 10, 0 )""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Java', 'Java Workshop', 'DETI', 'static/img/python.png', '2024-10-08', 2, 'NEI', 10, 15, 0, 0 )""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', 'C Workshop', 'DETI', 'static/img/C.png', '2024-08-09', 2, 'NEECT', 10, 15, 10, 0 )""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Java', 'Java Workshop', 'DETI', 'static/img/java.png', '2024-10-08', 2, 'NEI', 10, 15, 0, 0 )""")    
 
     cursor.execute("""DROP TABLE IF EXISTS user_events""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS user_events (

@@ -8,6 +8,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 app = Flask(__name__)
 app.secret_key = 'IDHASIHDAIDHASKPCLS'  
 
+app.config['MESSAGE_FLASHING_OPTIONS'] = {'duration': 7}
 
 init_db()
 
