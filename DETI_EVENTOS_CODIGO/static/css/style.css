@@ -324,3 +324,9 @@ h2 {
     border-radius: 4px;
     cursor: pointer;
 }
+
+/* Estilo personalizado para o botão OK */
+.swal2-confirm.custom-ok-button {
+    background-color: #11CF01 !important; /* Verde */
+    color: white !important;
+}
