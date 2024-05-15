@@ -1,4 +1,4 @@
-.modal {
+.modal, .modal_detalhes {
   display: none;
   position: fixed;
   z-index: 1;
@@ -12,7 +12,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.modal-content, .modal-content_detalhes {
   background-color: #f2fff1;
   margin: auto;
   padding: 20px;
@@ -47,6 +47,7 @@
   border-radius: 10px;
   padding: -10px;
 }
+
 
 .pop_up_image_upload {
   background-color: #BDBDBD;
@@ -92,6 +93,56 @@
 .pop_up_add_colaborador:hover {
   background-color: #1E9D13;
   color: rgb(255, 255, 255);
+}
+
+.pop_up_add_colaborador_detalhes {
+  background-color: transparent;
+  height: 40px;
+  border-radius: 10px;
+  margin-top: 25px;
+  padding: 10px;
+
+  text-align: center;
+  line-height: 40px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+
+  border: 2px solid rgb(0, 0, 0);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pop_up_add_colaborador_detalhes:hover {
+  cursor: default;
+  pointer-events: none;
+}
+
+.pop_up_add_categoria_detalhes {
+  background-color: transparent;
+  height: 40px;
+  border-radius: 10px;
+  margin-top: 25px;
+  padding: 10px;
+
+  text-align: center;
+  line-height: 40px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+
+  border: 2px solid rgb(0, 0, 0);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pop_up_add_categoria_detalhes:hover {
+  cursor: default;
+  pointer-events: none;
 }
 
 .pop_up_add_categoria {
@@ -149,15 +200,22 @@
 }
 
 .popup_data_input {
-  /* deixa mais bonito */
   background-color: transparent;
   border: none;
   border-bottom: 2px solid rgb(0, 0, 0);
   font-size: 1.2rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
+}
 
-
+.popup_data_input_detalhes {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #1E9D13;
+  font-size: 1.5rem;
+  font-weight: bold;
+  /* verde */
+  color: #1E9D13;
 }
 
 /* Descrição */
@@ -168,6 +226,17 @@
   border-radius: 10px;
   padding: 10px;
   font-size: 1.3rem;
+}
+
+.popup_descricao_detalhes {
+  background-color: transparent;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.3rem;
+  display: block;
+  width: 60%;
+  height: 50%;
 }
 
 /* Localização */
@@ -194,6 +263,17 @@
   display: none;
 }
 
+/* Vagas */
+.popup_vagas {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+#eventVacancies {
+  display: none;
+}
+
 /* Lotação */
 .popup_capacity {
   font-size: 1.2rem !important;
@@ -213,6 +293,9 @@
   font-weight: bold;
   border: none;
   border-radius: 10px;
+  margin-right: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .popup_criar_botao:hover {
