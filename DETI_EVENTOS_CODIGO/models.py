@@ -81,7 +81,7 @@ def authenticate_user(email, password):
         cursor.execute( "SELECT email, password, name FROM users WHERE email= ? AND password = ?", (email, password))
         results = cursor.fetchall()
         if len(results) == 0:
-            return False, "Incorrect email or password", None, None, None
+            return False, "Password errada", None, None, None
         
         return True, "", results[0][0], results[0][1], results[0][2]
     

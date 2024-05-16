@@ -307,10 +307,11 @@
               <span class="popup_preco">Preço: *</span><br>
               <span id="detail_eventPrice"></span><br>
             </div>
-
+              {% if not is_admin %}
               <form method="POST" action="/desinscrever}">
                 <button type="submit" class="desinscrever-button">Desinscrever</button>
               </form>
+              {% endif  %}
             <div></div>
             <div></div>
             <div></div>

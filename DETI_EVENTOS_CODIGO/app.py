@@ -175,7 +175,7 @@ def perfil():
 def searchmeus():
     search_term = request.args.get('q', '')  
     events = search_events(search_term)
-
+    user_id = get_user_id(session.get('user_email'))
     if events is None:
         flash('An error occurred while searching for events', category='error')
         return redirect('/')
@@ -185,19 +185,23 @@ def searchmeus():
         converted_event = list(event)
         converted_event[5] = datetime.strptime(event[5], '%Y-%m-%d').date()
         converted_events.append(tuple(converted_event))
+    
+    user_events = get_user_events(user_id)
+    user_events = list(user_events)
 
     is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
     name = session.get('user_name')
     user = 'user_email' in session
     user_id = 2
 
-    return render_template('eventos.html', events=converted_events, is_admin=is_admin, user_id=user_id, name=name)
+    return render_template('eventos.html', events=converted_events, is_admin=is_admin, user_id=user_id, name=name, user_events=user_events, user=user)
 
 
 @app.route('/search', methods=['GET'])
 def search():
     search_term = request.args.get('q', '')  
     events = search_events(search_term)
+    user_id = get_user_id(session.get('user_email'))
 
     if events is None:
         flash('An error occurred while searching for events', category='error')
@@ -209,10 +213,12 @@ def search():
         converted_event[5] = datetime.strptime(event[5], '%Y-%m-%d').date()
         converted_events.append(tuple(converted_event))
 
+    user_events = get_user_events(user_id)
+    user_events = list(user_events)
     is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
     name = session.get('user_name')
     user = 'user_email' in session
-    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name)
+    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name,user_id=user_id, user_events=user_events)
 
 
 @app.route('/update/<int:event_id>', methods=['GET', 'POST'])
