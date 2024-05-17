@@ -48,14 +48,15 @@ def home():
 
     user_events = get_user_events(user_id)
     user_events = list(user_events)
-    
+    registered_event_ids = [event[1] for event in user_events]
+    print(registered_event_ids)
     
     is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
     name  = session.get('user_name')
     if name is  not None:
         user = True
     event = get_events()
-    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name, event=event,  user_id = user_id, user_events=user_events)
+    return render_template('index.html', events=converted_events, is_admin=is_admin, user=user, name=name, event=event,  user_id = user_id, user_events=user_events, registered_event_ids = registered_event_ids)
 
 @app.route('/todos_os_eventos')
 def todos_os_eventos():
@@ -147,8 +148,9 @@ def criar():
 @app.route('/meus_eventos')
 def meus_eventos():
     # Fetch events associated with user 2
-    events = get_user_associated_events(2)
     user_id = get_user_id(session.get('user_email'))
+    events = get_user_associated_events(user_id)
+    user_img = get_user_img(user_id)
 
     converted_events = []
     for event in events:
@@ -163,8 +165,12 @@ def meus_eventos():
     user_events = get_user_events(user_id)
     user_events = list(user_events)
     event = get_events()
+    registered_event_ids = [event[1] for event in user_events]
+    registered_events = [event for event in converted_events if event[0] in registered_event_ids]
 
-    return render_template('eventos.html', events=converted_events, is_admin=False, user_id=2, name=name, user=user, user_events=user_events, event=event)
+
+
+    return render_template('eventos.html', is_admin=False, user_id=2, name=name, user=user, user_events=user_events, event=event, registered_event_ids = registered_event_ids, events=registered_events, user_img=user_img)
 
 
 @app.route('/perfil')
@@ -288,20 +294,21 @@ def inscrever(event_id):
     connection = sqlite3.connect('data.db', check_same_thread=False)
     cursor = connection.cursor()
     cursor.execute("SELECT id FROM users WHERE email = ?", (user_email,))
-    user_id = 2
+    user_id = cursor.fetchone()[0]  
 
     try:
         cursor.execute("INSERT INTO user_events (user_id, event_id) VALUES (?, ?)", (user_id, event_id)) 
         connection.commit()
         flash('Inscrição realizada com sucesso', category='success')
-        return redirect('/')
+    except sqlite3.IntegrityError:
+        flash('Você já está inscrito neste evento', category='error')
     except sqlite3.Error as e:
         print("Error inserting user event:", e)
         flash('An error occurred while registering for the event', category='error')
-        return redirect('/')
     finally:
-        if connection:
-            connection.close()
+        connection.close()
+    
+    return redirect('/')
 
 
 @app.route('/desinscrever/<int:event_id>', methods=['POST'])

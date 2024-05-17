@@ -91,8 +91,7 @@
       <!-- Sidebar -->
       <div class="col-md-3 sidebar">
         <div class="user-profile">
-          <img src="../static/images/user_icon.svg" alt="User Image" class="user-image">
-          <h3>{{name}}</h3>
+          <img src= {{user_img}} alt="User Image" class="profile-image" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%;">          <h3>{{name}}</h3>
           <ul class="user-links">
             <li><a href="#">Meus Eventos</a></li>
             <li><a href="#">Alterar email</a></li>
@@ -128,15 +127,15 @@
               </div>
 
               {% if not is_admin %}
-              {% if user_events[1][0] == user_id and event[0] == user_events[1][1] %}
-              <form method="POST" action="/desinscrever/{{ event[0] }}">
-                <button type="submit" class="desinscrever-button">Desinscrever</button>
-              </form>
+              {% if event[0] in registered_event_ids %}
+                  <form method="POST" action="/desinscrever/{{ event[0] }}">
+                      <button type="submit" class="desinscrever-button">Desinscrever</button>
+                  </form>
               {% else %}
-              <form method="POST" action="/inscrever/{{ event[0] }}">
-                <button type="submit" class="inscrever-button">Inscrever</button>
-              </form>
-                {% endif %}
+                  <form method="POST" action="/inscrever/{{ event[0] }}">
+                      <button type="submit" class="inscrever-button">Inscrever</button>
+                  </form>
+              {% endif %}
               </form>
               {% endif %}
             </div>

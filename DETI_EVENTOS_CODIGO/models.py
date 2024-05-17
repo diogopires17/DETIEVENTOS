@@ -10,11 +10,12 @@ def init_db():
     id INTEGER PRIMARY KEY,
     email TEXT NOT NULL,
     name TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    img TEXT
     );""")
-    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'admin@gmail.com', 'admin', 'admin')""")
-    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user1@gmail.com', 'António', '1' )""")
-    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user2@gmail.com', 'User2', '2' )""")
+    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'admin@gmail.com', 'NEECT', 'admin', 'static/img/neect.png')""")
+    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user1@gmail.com', 'António', '1', 'static/img/antonio.png' )""")
+    cursor.execute("""INSERT OR IGNORE INTO users VALUES (NULL,'user2@gmail.com', 'User2', '2', 'static/img/user1.png')""") 
 
     cursor.execute("""DROP TABLE IF EXISTS events""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS events (
@@ -33,13 +34,12 @@ def init_db():
     FOREIGN KEY(user_id) REFERENCES users(id)
     );""")
 
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Android', 'Android Workshop', 'DETI', 'static/img/android.png', '2024-06-27',1, 'NEECT', 15, 20, 0, 0)""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 2, 'NEECT', 10, 15, 10, 0 )""")    
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-05-07', 2, 'NEI', 30,30, 3, 1)""")   
-    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-15', 1, 'NEET', 10, 12, 5, 0 )""")    
     cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop C', 'C Workshop', 'DETI', 'static/img/C.png', '2024-08-09', 2, 'NEECT', 10, 15, 10, 0 )""")    
     cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Java', 'Java Workshop', 'DETI', 'static/img/java.png', '2024-10-08', 2, 'NEI', 10, 15, 0, 0 )""")    
-
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Python', 'Python Workshop', 'DETI', 'static/img/python.png', '2024-07-06', 2, 'NEECT', 10, 15, 10, 0 )""")    
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Palestra Dart', 'Palestra', 'Maker Lab', 'static/img/dart.svg', '2022-06-09', 2, 'NEI', 30,30, 3, 1)""")   
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Workshop Ruby', 'Ruby Workshop', 'DETI', 'static/img/ruby.jpg', '2024-07-12', 2, 'NEECT', 10, 15, 10, 0 )""")
+    cursor.execute("""INSERT OR IGNORE INTO events VALUES (NULL, 'Feira de empresas', 'Feira de empresas', 'Aquário', 'static/img/feira.jpg', '2024-05-27', 2, 'NEECT', 10, 15, 10, 0 )""")
     cursor.execute("""DROP TABLE IF EXISTS user_events""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS user_events (
     user_id INTEGER,
@@ -48,8 +48,7 @@ def init_db():
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(event_id) REFERENCES events(id)
     );""")
-    cursor.execute("""INSERT OR IGNORE INTO user_events VALUES (2, 1)""")
-    cursor.execute("""INSERT OR IGNORE INTO user_events VALUES (2, 4)""")
+
 
 
 
@@ -123,3 +122,8 @@ def get_user_associated_events(user_id):
     WHERE user_events.user_id = ?
     """, (user_id,))
     return cursor.fetchall()
+def get_user_img(user_id):
+    connection = sqlite3.connect('data.db', check_same_thread=False)
+    cursor = connection.cursor()
+    cursor.execute("SELECT img FROM users WHERE id = ?", (user_id,))
+    return cursor.fetchall()[0][0]
