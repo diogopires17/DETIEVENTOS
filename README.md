@@ -9,7 +9,7 @@ Os questionários usados durante os testes com utilizadores e respetivos resulta
 
 # Aceder à versão web
 
-Caso queira testar o sistema pode usar o link: https://detieventos.pythonanywhere.com/
+Caso queira testar o sistema pode usar o link: https://detieventos.pythonanywhere.com/</br>
 Para entrar precisa de ser um admin ou um utilizador, sendo necessário login:
 
 ### Admin
