@@ -182,6 +182,8 @@ def searchmeus():
     search_term = request.args.get('q', '')  
     events = search_events(search_term)
     user_id = get_user_id(session.get('user_email'))
+    user_img = get_user_img(user_id)
+
     if events is None:
         flash('An error occurred while searching for events', category='error')
         return redirect('/')
@@ -194,13 +196,13 @@ def searchmeus():
     
     user_events = get_user_events(user_id)
     user_events = list(user_events)
-
+    event = get_events()
     is_admin = 'user_email' in session and session.get('user_email') == "admin@gmail.com"
     name = session.get('user_name')
     user = 'user_email' in session
     user_id = 2
 
-    return render_template('eventos.html', events=converted_events, is_admin=is_admin, user_id=user_id, name=name, user_events=user_events, user=user)
+    return render_template('eventos.html', events=converted_events, is_admin=is_admin, user_id=user_id, name=name, user_events=user_events, user=user, event=event, user_img=user_img)
 
 
 @app.route('/search', methods=['GET'])
